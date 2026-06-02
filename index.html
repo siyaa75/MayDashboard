@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎬 前製部5月報 | MOONSHINE 2026 MAY</title>
+  <style>
+    /* ════════════════════════════════════════
+       § 1  CSS 設計 Token
+    ════════════════════════════════════════ */
+    :root {
+      --bg:      #f8fafc;
+      --border:  #e2e8f0;
+      --text:    #1e293b;
+      --muted:   #64748b;
+      --light:   #94a3b8;
+      --slate-50:#f8fafc;
+      --slate-100:#f1f5f9;
+
+      --indigo:  #4f46e5;  --indigo-l:  #eef2ff;  --indigo-m:  #e0e7ff;
+      --emerald: #059669;  --emerald-l: #ecfdf5;  --emerald-m: #d1fae5;
+      --rose:    #e11d48;  --rose-l:    #fff1f2;  --rose-m:    #ffe4e6;
+      --amber:   #d97706;  --amber-l:   #fffbeb;  --amber-m:   #fef3c7;
+      --sky:     #0284c7;  --sky-l:     #f0f9ff;  --sky-m:     #e0f2fe;
+
+      /* 間距 / 圓角 / 陰影 Token */
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    }
+
+    /* ════════════════════════════════════════
+       § 2  重置 & 版面保護
+    ════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 16px; }
+
+    body {
+      font-family: 'Microsoft JhengHei', 'PingFang TC', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #app {
+      display: flex;
+      flex-direction: column;
+      transform-origin: top left;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    /* ════════════════════════════════════════
+       § 3  Header
+    ════════════════════════════════════════ */
+    .header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 20px; background: white; border-bottom: 1px solid var(--border);
+      flex-shrink: 0; flex-wrap: wrap; gap: 10px; z-index: 100;
+    }
+
+    .header h1        { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+    .header h1 small  { font-weight: 400; font-size: 14px; color: var(--light); }
+    .header .sub      { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .header-right     { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+    .folder-btn {
+      background: var(--indigo-l); color: var(--indigo); border: 1px solid var(--indigo-m);
+      border-radius: 8px; padding: 6px 10px; text-decoration: none; font-weight: 700; font-size: 11px;
+      display: flex; align-items: center; gap: 4px; transition: all .2s; white-space: nowrap; cursor: pointer;
+    }
+    .folder-btn:hover { background: var(--indigo); color: white; }
+
+    .zoom-ctrl { display: flex; align-items: center; gap: 6px; background: #f1f5f9; padding: 5px 10px; border-radius: 8px; border: 1px solid var(--border); }
+    .zoom-btn { background: white; border: 1px solid #cbd5e1; border-radius: 5px; width: 26px; height: 26px; font-weight: 700; font-size: 13px; cursor: pointer; color: var(--text); transition: all .2s; display: flex; align-items: center; justify-content: center; }
+    .zoom-btn:hover { background: var(--indigo-m); color: var(--indigo); }
+    .zoom-val { font-size: 12px; font-weight: 700; width: 40px; text-align: center; color: var(--muted); }
+
+    .path-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: var(--radius-md);
+      background: var(--indigo-l); color: var(--indigo); border: 1px solid var(--indigo-m); font-weight: 700; font-size: 12px;
+      cursor: pointer; font-family: inherit; transition: all .2s; white-space: nowrap;
+    }
+    .path-btn:hover { background: var(--indigo); color: white; }
+
+    .metrics        { display: flex; gap: 8px; flex-wrap: wrap; }
+    .metric         { padding: 6px 12px; border-radius: var(--radius-md); text-align: center; border: 1px solid transparent; }
+    .metric.e       { background: var(--emerald-l); border-color: var(--emerald-m); }
+    .metric.r       { background: var(--rose-l);    border-color: var(--rose-m); }
+    .metric-val     { font-size: 17px; font-weight: 800; line-height: 1.2; }
+    .metric-val.e   { color: var(--emerald); }
+    .metric-val.r   { color: var(--rose); }
+    .metric-label   { font-size: 10px; font-weight: 700; text-transform: uppercase; opacity: .7; margin-top: 1px; }
+
+    /* ════════════════════════════════════════
+       § 4  Tab Nav
+    ════════════════════════════════════════ */
+    .tab-nav {
+      display: flex; gap: 6px; padding: 8px 20px; background: white; border-bottom: 1px solid var(--border); flex-shrink: 0; flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 7px 16px; border: none; background: var(--slate-100); color: var(--muted); font-weight: 600; font-size: 13px;
+      border-radius: var(--radius-sm); cursor: pointer; font-family: inherit; transition: all .15s; white-space: nowrap;
+    }
+    .tab-btn:hover  { background: var(--indigo-m); color: var(--indigo); }
+    .tab-btn.active { background: var(--indigo); color: white; box-shadow: 0 3px 8px rgba(79,70,229,.3); }
+
+    /* ════════════════════════════════════════
+       § 5  Main & Tab Panels
+    ════════════════════════════════════════ */
+    .main           { display: flex; flex: 1; overflow: hidden; }
+    .tab-panel      { display: none; width: 100%; height: 100%; overflow: hidden; }
+    .tab-panel.active { display: flex; flex-direction: column; }
+
+    .overview-scroll { flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 16px; }
+
+    /* ════════════════════════════════════════
+       § 6  Split Layout（可拖動分隔線）
+    ════════════════════════════════════════ */
+    .split-wrap   { display: flex; width: 100%; flex: 1; overflow: hidden; }
+
+    .split-left { width: 340px; min-width: 220px; flex-shrink: 0; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+
+    .splitter { width: 8px; flex-shrink: 0; background: var(--border); cursor: col-resize; position: relative; display: flex; align-items: center; justify-content: center; transition: background .15s; z-index: 10; }
+    .splitter:hover, .splitter.dragging          { background: var(--indigo-m); }
+    .splitter::after            { content: '⋮'; font-size: 13px; color: var(--light); pointer-events: none; }
+    .splitter:hover::after, .splitter.dragging::after   { color: var(--indigo); }
+
+    .split-right { flex: 1; overflow-y: auto; padding: 18px; min-width: 0; }
+
+    /* ════════════════════════════════════════
+       § 7  Card 元件
+    ════════════════════════════════════════ */
+    .card { background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-sm); }
+    .card-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 7px; }
+    .bar   { width: 4px; height: 16px; border-radius: 3px; display: inline-block; }
+    .bar-i { background: var(--indigo); }
+    .bar-r { background: var(--rose); }
+
+    .card.risk-card { background: var(--rose-l); border-color: var(--rose-m); }
+    .overview-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; }
+    .risk-grid     { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .risk-col h4   { font-size: 12px; font-weight: 700; color: #9f1239; margin-bottom: 7px; }
+    .risk-item     { display: flex; gap: 6px; font-size: 12px; color: #be123c; line-height: 1.6; margin-bottom: 8px; }
+    .risk-tag      { background: #fecdd3; padding: 1px 5px; border-radius: 3px; font-size: 10px; font-weight: 700; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+
+    .hl-list  { display: flex; flex-direction: column; gap: 10px; }
+    .hl-item  { padding: 11px 14px; border-radius: 9px; background: #f8fafc; border-left: 4px solid #cbd5e1; }
+    .hl-item.i { border-color: var(--indigo); }
+    .hl-item.a { border-color: #f59e0b; }
+    .hl-item.e { border-color: #10b981; }
+    .hl-item h3 { font-size: 13px; margin-bottom: 3px; }
+    .hl-item p  { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+    /* ════════════════════════════════════════
+       § 9  甜甜圈圖
+    ════════════════════════════════════════ */
+    .chart-wrap { display: grid; grid-template-columns: 100px 1fr; align-items: center; gap: 14px; }
+    .donut { width: 90px; height: 90px; border-radius: 50%; position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform .25s, filter .25s; }
+    .donut:hover { transform: scale(1.06); filter: drop-shadow(0 6px 14px rgba(0,0,0,.12)); }
+    .donut-inner { width: 58%; height: 58%; background: white; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; line-height: 1; text-align: center; box-shadow: inset 0 2px 4px rgba(0,0,0,.05); z-index: 1; }
+    .donut-inner span { font-size: 10px; font-weight: 600; color: var(--muted); margin-top: 2px; }
+
+    .legend      { list-style: none; font-size: 11px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+    .legend-item { display: flex; align-items: center; gap: 5px; padding: 2px 5px; border-radius: 5px; transition: all .2s; cursor: default; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .legend-item:hover { background: var(--slate-100); color: var(--text); font-weight: 700; transform: translateX(3px); }
+    .dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+    /* ════════════════════════════════════════
+       § 10  專案清單
+    ════════════════════════════════════════ */
+    .section-header  { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .section-title   { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 7px; }
+    .notion-link     { font-size: 11px; color: var(--indigo); text-decoration: none; background: var(--indigo-l); padding: 5px 10px; border-radius: var(--radius-sm); font-weight: 700; }
+    .notion-link:hover { background: var(--indigo-m); }
+
+    .owner-block  { margin-bottom: 22px; }
+    .owner-header { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; font-size: 13px; font-weight: 700; border-bottom: 2px solid var(--border); padding-bottom: 7px; margin-bottom: 10px; cursor: pointer; transition: border-color .2s; }
+    .owner-header:hover          { border-bottom-color: var(--indigo-m); }
+    .owner-header:hover .status-btn { background: var(--indigo); color: white; }
+
+    .owner-avatar { width: 26px; height: 26px; border-radius: 50%; background: var(--indigo-m); color: var(--indigo); font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+    .owner-count  { font-size: 11px; color: var(--light); font-weight: 400; margin-left: auto; }
+    .badge-hot    { background: #ffe4e6; color: #be123c; font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 700; }
+    .badge-mid    { background: var(--amber-m); color: var(--amber); font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 700; }
+    .status-btn   { font-size: 10px; background: var(--slate-100); color: var(--muted); padding: 3px 7px; border-radius: 9px; font-weight: 700; transition: all .2s; display: inline-flex; align-items: center; gap: 3px; }
+
+    .task-items { display: flex; flex-direction: column; gap: 7px; padding-left: 11px; border-left: 2px solid #f1f5f9; margin-left: 8px; }
+    .task-card  { background: white; border: 1px solid var(--border); border-radius: 9px; padding: 10px 12px; display: flex; flex-direction: column; gap: 5px; transition: transform .15s, box-shadow .15s; }
+    .task-card:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+    .task-top     { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+    .task-info    { flex: 1; min-width: 0; }
+    .task-project { font-size: 14.5px; color: var(--indigo); font-weight: 800; margin-bottom: 4px; }
+    .task-name    { font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--slate-800); }
+    .task-meta    { font-size: 11px; color: var(--light); margin-top: 2px; display: flex; gap: 6px; flex-wrap: wrap; }
+
+    .meta-tag { background: var(--slate-100); padding: 1px 6px; border-radius: 4px; color: var(--muted); }
+    .task-note  { font-size: 12px; color: #475569; background: #f8fafc; border-radius: 5px; padding: 8px 12px; line-height: 1.7; margin-top: 2px; white-space: pre-line; }
+    .note-label { color: #f59e0b; font-weight: 700; margin-right: 3px; }
+
+    .status   { padding: 2px 8px; border-radius: 5px; font-size: 11px; font-weight: 700; white-space: nowrap; flex-shrink: 0; }
+    .s-done   { background: #dcfce7; color: #15803d; }
+    .s-doing  { background: #e0f2fe; color: #0369a1; }
+    .s-pitch  { background: #fef9c3; color: #a16207; }
+    .s-todo   { background: var(--slate-100); color: #475569; }
+    .s-pause  { background: #f3e8ff; color: #7e22ce; }
+
+    /* ════════════════════════════════════════
+       § 11  動態新增圖片與畫廊樣式
+    ════════════════════════════════════════ */
+    .gallery-scroll { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 28px; }
+    
+    .gallery-filter { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: white; padding: 10px 16px; border-radius: var(--radius-md); border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+    .filter-label   { font-size: 12px; font-weight: 700; color: var(--muted); margin-right: 4px; }
+    .filter-btn     { padding: 5px 14px; border: 1px solid var(--border); border-radius: 20px; background: white; color: var(--muted); font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all .2s; }
+    .filter-btn:hover  { border-color: var(--indigo); color: var(--indigo); background: var(--indigo-l); }
+    .filter-btn.active { background: var(--indigo); color: white; border-color: var(--indigo); box-shadow: 0 2px 6px rgba(79,70,229,.3); }
+
+    .gallery-section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
+    .gallery-section-title  { font-size: 15px; font-weight: 800; }
+    .gallery-count          { font-size: 12px; color: var(--light); font-weight: 400; }
+
+    /* 畫廊的卡片網格 */
+    .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+
+    .photo-card { position: relative; border-radius: var(--radius-md); overflow: hidden; aspect-ratio: 16/9; background: var(--slate-100); cursor: pointer; transition: transform .2s, box-shadow .2s; border: 1px solid var(--border); }
+    .photo-card:hover { transform: translateY(-3px) scale(1.02); box-shadow: var(--shadow-md); }
+    .photo-card img   { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; transition: filter .2s; }
+    .photo-card:hover img { filter: brightness(1.08); }
+
+    .photo-label { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,.75)); color: white; font-size: 12px; font-weight: 600; padding: 24px 12px 10px; line-height: 1.4; transition: opacity .2s; }
+    
+    .photo-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, var(--slate-50), #e8edf2); color: var(--muted); font-size: 12px; text-align: center; padding: 16px; }
+    .photo-placeholder span { font-size: 28px; margin-bottom: 4px;}
+    .photo-placeholder code { background: white; padding: 4px 8px; border-radius: 4px; font-size: 10px; color: var(--rose); margin-top: 4px; border: 1px solid var(--border); display:block; word-break: break-all;}
+
+    /* 行事曆大圖專用容器 */
+    .calendar-container { width: 100%; background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-sm); margin-bottom: 24px; }
+    .calendar-hero-img { width: 100%; height: auto; min-height: 200px; background: var(--slate-100); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; border: 1px solid var(--border); position: relative; }
+    .calendar-hero-img img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.2s; }
+    .calendar-hero-img:hover img { transform: scale(1.01); }
+    .calendar-hero-img .overlay-hint { position: absolute; bottom: 16px; right: 16px; background: rgba(0,0,0,0.6); color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+    .calendar-hero-img:hover .overlay-hint { opacity: 1; }
+
+    /* 動態新增按鈕 */
+    .dynamic-add-btn { width: 100%; padding: 12px; margin-top: 12px; background: transparent; border: 2px dashed #cbd5e1; border-radius: var(--radius-md); color: var(--muted); font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+    .dynamic-add-btn:hover { border-color: var(--indigo); color: var(--indigo); background: var(--indigo-l); }
+    
+    /* 刪除按鈕 */
+    .delete-btn { position: absolute; top: 8px; right: 8px; background: rgba(225,29,72,0.9); color: white; border: none; border-radius: 50%; width: 26px; height: 26px; cursor: pointer; font-size: 14px; z-index: 20; display: none; align-items: center; justify-content: center; transition: transform 0.1s; }
+    .delete-btn:hover { transform: scale(1.1); background: rgba(225,29,72,1); }
+
+    /* ════════════════════════════════════════
+       § 12  Modals & Lightbox
+    ════════════════════════════════════════ */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.45); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity .2s; }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+    .modal-box { background: white; border-radius: var(--radius-lg); width: 92%; max-width: 460px; padding: 24px; box-shadow: 0 12px 28px rgba(0,0,0,.14); transform: translateY(16px); transition: transform .25s; position: relative; }
+    .modal-overlay.active .modal-box { transform: translateY(0); }
+    .modal-close   { position: absolute; top: 16px; right: 16px; background: transparent; border: none; font-size: 22px; color: var(--light); cursor: pointer; line-height: 1; }
+    .modal-close:hover { color: var(--rose); }
+
+    .modal-header  { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .modal-avatar  { width: 42px; height: 42px; border-radius: 50%; background: var(--indigo-l); color: var(--indigo); font-size: 17px; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 2px solid var(--indigo-m); flex-shrink: 0; }
+    .modal-name    { font-size: 17px; font-weight: 800; margin: 0; }
+    .modal-badge   { font-size: 11px; padding: 2px 7px; border-radius: 5px; font-weight: 700; display: inline-block; margin-top: 5px; }
+    .modal-section { padding: 11px 14px; border-radius: 8px; margin-bottom: 9px; line-height: 1.6; font-size: 13px; }
+    .modal-hl      { background: var(--emerald-l); border: 1px solid var(--emerald-m); color: #065f46; }
+    .modal-warn    { background: var(--rose-l); border: 1px solid var(--rose-m); color: #9f1239; margin-bottom: 0; }
+    .modal-projects { font-size: 12px; color: var(--muted); margin-bottom: 12px; padding: 8px 12px; background: #f8fafc; border-radius: 7px; border: 1px dashed var(--border); font-weight: 600; }
+
+    /* Lightbox */
+    .lightbox { position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,.92); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .25s; }
+    .lightbox.active { opacity: 1; pointer-events: auto; }
+    .lightbox-img { max-width: 90vw; max-height: 85vh; border-radius: var(--radius-lg); box-shadow: 0 24px 48px rgba(0,0,0,.5); object-fit: contain; transform: scale(.92); transition: transform .25s; }
+    .lightbox.active .lightbox-img { transform: scale(1); }
+    .lightbox-caption { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,.8); color: white; padding: 8px 20px; border-radius: 24px; font-size: 14px; font-weight: 600; max-width: 80vw; text-align:center;}
+    .lightbox-close { position: absolute; top: 18px; right: 22px; background: rgba(255,255,255,.15); border: none; color: white; font-size: 26px; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s; line-height: 1; }
+    .lightbox-close:hover { background: rgba(255,255,255,.4); }
+    .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,.15); border: none; color: white; font-size: 22px; width: 48px; height: 48px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+    .lightbox-nav:hover { background: rgba(255,255,255,.4); }
+    .lightbox-nav.prev { left: 20px; }
+    .lightbox-nav.next { right: 20px; }
+    .lightbox-counter  { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,.7); font-size: 13px; font-weight:bold;}
+
+    /* Form Elements for Add Modal */
+    .form-group { margin-bottom: 14px; }
+    .form-label { display: block; font-size: 13px; font-weight: 700; color: var(--slate-800); margin-bottom: 6px; }
+    .form-input { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; font-family: inherit; font-size: 13px; }
+    .form-input:focus { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 2px var(--indigo-l); }
+    .form-btn { width: 100%; padding: 12px; background: var(--indigo); color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; transition: background 0.2s; font-size: 14px; }
+    .form-btn:hover { background: #4338ca; }
+
+    /* ════════════════════════════════════════
+       § 13  手機 RWD
+    ════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      body { height: auto; overflow: auto; }
+      #app-wrapper { transform: none !important; width: 100% !important; height: auto !important; overflow: visible; }
+      .main { overflow: visible; height: auto; }
+      .tab-panel.active { display: flex; height: auto; overflow: visible; }
+      .overview-scroll  { overflow: visible; height: auto; padding: 12px; }
+
+      .split-wrap  { flex-direction: column; height: auto; overflow: visible; }
+      .split-left  { width: 100% !important; max-width: 100%; overflow-y: visible; border-right: none; border-bottom: 2px solid var(--border); padding-bottom: 16px; }
+      .splitter    { display: none; }
+      .split-right { overflow-y: visible; padding: 14px; }
+
+      .header { padding: 8px 12px; }
+      .header h1 { font-size: 14px; }
+      .zoom-ctrl { display: none; }
+
+      .metrics .metric { padding: 4px 7px; }
+      .metric-val { font-size: 14px; }
+
+      .photo-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+    }
+
+    ::-webkit-scrollbar        { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body>
+
+<div id="app-wrapper">
+
+  <header class="header">
+    <div>
+      <h1>🧠 MOONSHINE 前製部 <small>| 2026 MAY</small></h1>
+      <div class="sub">數據更新：2026/05/31 18:00 (本地快取版)</div>
+    </div>
+    <div class="header-right">
+      <div class="zoom-ctrl">
+        <button class="zoom-btn" onclick="changeZoom(-0.1)" title="縮小">A−</button>
+        <span class="zoom-val" id="zoom-level">100%</span>
+        <button class="zoom-btn" onclick="changeZoom(0.1)"  title="放大">A+</button>
+      </div>
+      <div class="metrics">
+        <div class="metric e"><div class="metric-val e">100%</div><div class="metric-label" style="color:var(--emerald)">團隊負載</div></div>
+        <div class="metric r"><div class="metric-val r">+1 人</div><div class="metric-label" style="color:var(--rose)">人員異動</div></div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('calendar',this)">📅 行事曆</button>
+    <button class="tab-btn" onclick="switchTab('design',this)">🎨 設計概念組</button>
+    <button class="tab-btn" onclick="switchTab('director',this)">🎬 導演組</button>
+    <button class="tab-btn" onclick="switchTab('gallery',this)">📸 精選集</button>
+  </nav>
+
+  <div class="main">
+
+    <!-- ════ TAB 1：📅 行事曆 ════ -->
+    <div id="tab-calendar" class="tab-panel active">
+      <div class="overview-scroll">
+        
+        <div class="card" style="background: var(--indigo-l); border-color: var(--indigo-m); display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <span style="font-size: 24px;">💡</span>
+                <div>
+                    <h3 style="font-size: 14px; font-weight: 800; color: var(--indigo); margin:0;">自訂行事曆截圖區</h3>
+                    <p style="font-size: 12px; color: var(--muted); margin:0;">點擊下方按鈕貼上內網截圖路徑，圖片會自動儲存在您的瀏覽器中！</p>
+                </div>
+            </div>
+            <a href="https://calendar.notion.so/2026/5" target="_blank" rel="noopener" class="path-btn" style="background:var(--indigo);color:white;border-color:var(--indigo)">
+                🔗 開啟 Notion 日曆
+            </a>
+        </div>
+
+        <div class="calendar-container">
+            <div class="card-title" style="font-size: 16px;"><span class="bar bar-i"></span>🎨 設計概念組 - 專案排程</div>
+            <div id="cal_design-container" style="display: flex; flex-direction: column; gap: 16px;">
+                <!-- JavaScript 會將圖片渲染在這裡 -->
+            </div>
+            <button class="dynamic-add-btn" onclick="openAddImgModal('cal_design')">＋ 貼上設計組行事曆截圖</button>
+        </div>
+
+        <div class="calendar-container">
+            <div class="card-title" style="font-size: 16px;"><span class="bar bar-r"></span>🎬 導演組 - 專案排程</div>
+            <div id="cal_director-container" style="display: flex; flex-direction: column; gap: 16px;">
+                 <!-- JavaScript 會將圖片渲染在這裡 -->
+            </div>
+            <button class="dynamic-add-btn" onclick="openAddImgModal('cal_director')">＋ 貼上導演組行事曆截圖</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ════ TAB 2：設計概念組 ════ -->
+    <div id="tab-design" class="tab-panel">
+      <div class="split-wrap">
+        <div class="split-left" id="split-design-left">
+          <div class="card">
+            <div class="card-title" style="font-size:12px">專案來源佔比</div>
+            <div class="chart-wrap">
+              <div class="donut" style="background:conic-gradient(var(--indigo) 0% 40%, var(--emerald) 40% 80%, var(--amber) 80% 90%, var(--sky) 90% 100%)">
+                <div class="donut-inner">10<span>總計</span></div>
+              </div>
+              <ul class="legend">
+                <li class="legend-item"><span class="dot" style="background:var(--indigo)"></span>動畫部 (4) 40%</li>
+                <li class="legend-item"><span class="dot" style="background:var(--emerald)"></span>廣告部 (4) 40%</li>
+                <li class="legend-item"><span class="dot" style="background:var(--amber)"></span>視效部 (1) 10%</li>
+                <li class="legend-item"><span class="dot" style="background:var(--sky)"></span>前製部 (1) 10%</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title" style="font-size:12px">專案類型分佈</div>
+            <div class="chart-wrap">
+              <div class="donut" style="background:conic-gradient(var(--emerald) 0% 40%, var(--amber) 40% 60%, var(--sky) 60% 70%, #a855f7 70% 80%, var(--rose) 80% 90%, var(--light) 90% 100%)">
+                <div class="donut-inner">10<span>總計</span></div>
+              </div>
+              <ul class="legend">
+                <li class="legend-item"><span class="dot" style="background:var(--emerald)"></span>產品 (4) 40%</li>
+                <li class="legend-item"><span class="dot" style="background:var(--amber)"></span>角色動畫 (2) 20%</li>
+                <li class="legend-item"><span class="dot" style="background:var(--sky)"></span>廣告 (1) 10%</li>
+                <li class="legend-item"><span class="dot" style="background:#a855f7"></span>投影 (1) 10%</li>
+                <li class="legend-item"><span class="dot" style="background:var(--rose)"></span>MV (1) 10%</li>
+                <li class="legend-item"><span class="dot" style="background:var(--light)"></span>補助案 (1) 10%</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title" style="font-size:12px">📁 概念組資料夾</div>
+            <button class="path-btn" style="width:100%;justify-content:center;padding:9px" data-path="U:\_PC\Siya\部門\2. 設計\2026_設計概念組月報\5月" onclick="copyPath(this)">
+              📋 複製概念組資料夾路徑
+            </button>
+            <div style="font-size:10.5px;color:var(--muted);margin-top:8px;padding:7px 9px;background:#f8fafc;border-radius:5px;border:1px dashed #cbd5e1;word-break:break-all;line-height:1.5">
+              U:\_PC\Siya\部門\2. 設計\2026_設計概念組月報\5月
+            </div>
+          </div>
+        </div>
+
+        <div class="splitter" id="sp-design" title="拖動調整比例"></div>
+
+        <div class="split-right">
+          <div class="section-header">
+            <div class="section-title">📋 設計組專案清單</div>
+            <a href="https://www.notion.so/34aaf6f93c2a80469b80f366bdbd115e?v=34aaf6f93c2a8032a83f000c6b5f371a&source=copy_link" target="_blank" rel="noopener" class="notion-link">🔗 在 Notion 開啟</a>
+          </div>
+
+          <!-- 語桐 -->
+          <div class="owner-block">
+            <div class="owner-header" onclick="openModal('語桐')">
+              <div class="owner-avatar">語</div>語桐
+              <span class="badge-hot">🔥 高負載</span>
+              <span class="status-btn">🔍 狀態/亮點</span>
+              <span class="owner-count">2 項目</span>
+            </div>
+            <div class="task-items">
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3395 - Msi_TitanDragonEdition</div><div class="task-name">ColorScript 產出</div><div class="task-meta"><span>📅 五月中旬</span></div></div><span class="status s-doing">進行中</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3449 - PxPay_plus</div><div class="task-name">SF調度與QC</div><div class="task-meta"><span>📅 五月下旬</span></div></div><span class="status s-doing">進行中</span></div></div>
+            </div>
+          </div>
+
+          <!-- 家綺 -->
+          <div class="owner-block">
+            <div class="owner-header" onclick="openModal('家綺')">
+              <div class="owner-avatar">家</div>家綺
+              <span class="badge-hot">🔥 高負載</span>
+              <span class="status-btn">🔍 狀態/亮點</span>
+              <span class="owner-count">2 項目</span>
+            </div>
+            <div class="task-items">
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3449 - PxPay_plus</div><div class="task-name">日本卡 3D 模型輔助</div><div class="task-meta"><span>📅 五月中旬</span></div></div><span class="status s-doing">進行中</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3500 - Acer_PredatorLeague7</div><div class="task-name">常服角色設計</div><div class="task-meta"><span>📅 五月下旬</span></div></div><span class="status s-doing">進行中</span></div></div>
+            </div>
+          </div>
+
+          <!-- 芝翊 -->
+          <div class="owner-block">
+            <div class="owner-header" onclick="openModal('芝翊')">
+              <div class="owner-avatar">芝</div>芝翊
+              <span class="badge-hot">🔥 高負載</span>
+              <span class="status-btn">🔍 狀態/亮點</span>
+              <span class="owner-count">2 項目</span>
+            </div>
+            <div class="task-items">
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3075 - 夢境_故宮_LED玉器案</div><div class="task-name">9張 SF 分層處理</div><div class="task-meta"><span>📅 五月中旬</span></div></div><span class="status s-doing">進行中</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3516 - RogT1聯名顯卡</div><div class="task-name">Layout直橫版本調整</div><div class="task-meta"><span>📅 五月下旬</span></div></div><span class="status s-doing">進行中</span></div></div>
+            </div>
+          </div>
+
+          <!-- 婕㚬 -->
+          <div class="owner-block">
+            <div class="owner-header" onclick="openModal('婕㚬')">
+              <div class="owner-avatar">婕</div>婕㚬
+              <span class="badge-hot">🔥 高負載</span>
+              <span class="status-btn">🔍 狀態/亮點</span>
+              <span class="owner-count">3 項目</span>
+            </div>
+            <div class="task-items">
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3161 - 黑白清道夫</div><div class="task-name">5角色邊框勾勒</div><div class="task-meta"><span>📅 五月中旬</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3500 - Acer_PredatorLeague7</div><div class="task-name">武器設計</div><div class="task-meta"><span>📅 五月下旬</span></div></div><span class="status s-doing">進行中</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3478 - Rog_20thAnniversaryLineup</div><div class="task-name">正片分鏡修改</div><div class="task-meta"><span>📅 等待反饋</span></div></div><span class="status s-pause">暫停</span></div></div>
+            </div>
+          </div>
+
+          <!-- 士堯 -->
+          <div class="owner-block">
+            <div class="owner-header" onclick="openModal('士堯')">
+              <div class="owner-avatar">士</div>士堯
+              <span class="badge-hot">🔥 高負載</span>
+              <span class="status-btn">🔍 狀態/亮點</span>
+              <span class="owner-count">1 項目</span>
+            </div>
+            <div class="task-items">
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3449 - PxPay_plus</div><div class="task-name">遠景MP與台灣/韓國卡建築反饋</div><div class="task-meta"><span>📅 五月下旬</span></div></div><span class="status s-doing">進行中</span></div></div>
+            </div>
+          </div>
+
+          <!-- 苡安 -->
+          <div class="owner-block">
+            <div class="owner-header" onclick="openModal('苡安')">
+              <div class="owner-avatar">苡</div>苡安
+              <span class="badge-hot">🔥 高負載</span>
+              <span class="status-btn">🔍 狀態/亮點</span>
+              <span class="owner-count">2 項目</span>
+            </div>
+            <div class="task-items">
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3449 - PxPay_plus</div><div class="task-name">富士山及虎利表情多版本對焦</div><div class="task-meta"><span>📅 五月中旬</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3075 - 夢境_故宮_LED玉器案</div><div class="task-name">協助 SF 分層處理</div><div class="task-meta"><span>📅 五月下旬</span></div></div><span class="status s-doing">進行中</span></div></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ TAB 3：導演組 ════ -->
+    <div id="tab-director" class="tab-panel">
+      <div class="split-wrap">
+
+        <div class="split-left" id="split-director-left">
+          <div class="card">
+            <div class="card-title" style="font-size:13px">專案來源佔比</div>
+            <div class="chart-wrap">
+              <div class="donut" style="background:conic-gradient(var(--emerald) 0% 52.4%, var(--sky) 52.4% 71.4%, var(--indigo) 71.4% 85.7%, var(--light) 85.7% 95.2%, var(--amber) 95.2% 100%)">
+                <div class="donut-inner">21<span>總計</span></div>
+              </div>
+              <ul class="legend">
+                <li class="legend-item"><span class="dot" style="background:var(--emerald)"></span>廣告部 (11) 52.4%</li>
+                <li class="legend-item"><span class="dot" style="background:var(--sky)"></span>前製部 (4) 19%</li>
+                <li class="legend-item"><span class="dot" style="background:var(--indigo)"></span>動畫部 (3) 14.3%</li>
+                <li class="legend-item"><span class="dot" style="background:var(--light)"></span>其他 (2) 9.5%</li>
+                <li class="legend-item"><span class="dot" style="background:var(--amber)"></span>視效部 (1) 4.8%</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title" style="font-size:13px">專案類型分佈</div>
+            <div class="chart-wrap">
+              <div class="donut" style="background:conic-gradient(var(--emerald) 0% 47.6%, var(--sky) 47.6% 66.6%, var(--amber) 66.6% 76.1%, #a855f7 76.1% 85.6%, var(--light) 85.6% 95.1%, var(--rose) 95.1% 100%)">
+                <div class="donut-inner">21<span>總計</span></div>
+              </div>
+              <ul class="legend">
+                <li class="legend-item"><span class="dot" style="background:var(--emerald)"></span>產品 (10) 47.6%</li>
+                <li class="legend-item"><span class="dot" style="background:var(--sky)"></span>廣告 (4) 19%</li>
+                <li class="legend-item"><span class="dot" style="background:var(--amber)"></span>角色動畫 (2) 9.5%</li>
+                <li class="legend-item"><span class="dot" style="background:#a855f7"></span>投影 (2) 9.5%</li>
+                <li class="legend-item"><span class="dot" style="background:var(--light)"></span>互動/其它 (2) 9.5%</li>
+                <li class="legend-item"><span class="dot" style="background:var(--rose)"></span>MV (1) 4.8%</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title" style="font-size:13px">📁 專案目錄</div>
+            <button class="path-btn" style="width:100%;justify-content:center;padding:9px" data-path="U:\_PC\Siya\部門\1. 導演\2026_導演組月報\260531_導演組5月報" onclick="copyPath(this)">
+              📋 複製導演組資料夾路徑
+            </button>
+            <div style="font-size:10.5px;color:var(--muted);margin-top:8px;padding:7px 9px;background:#f8fafc;border-radius:5px;border:1px dashed #cbd5e1;word-break:break-all;line-height:1.5">
+              U:\_PC\Siya\部門\1. 導演\2026_導演組月報\260531_導演組5月報
+            </div>
+          </div>
+        </div>
+
+        <div class="splitter" id="sp-director" title="拖動調整比例"></div>
+
+        <div class="split-right">
+          <div class="section-header">
+            <div class="section-title">📋 導演組專案清單</div>
+            <a href="https://www.notion.so/344af6f93c2a8052af19fd07ee8350e1?v=359af6f93c2a809ebf80000c9d7c413d&source=copy_link" target="_blank" rel="noopener" class="notion-link">🔗 在 Notion 開啟</a>
+          </div>
+
+          <!-- 劭謙 -->
+          <div class="owner-block">
+            <div class="owner-header" onclick="openModal('劭謙')">
+              <div class="owner-avatar">劭</div>劭謙
+              <span class="badge-hot">🔥 高負載</span>
+              <span class="status-btn">🔍 狀態/亮點</span>
+              <span class="owner-count">1 項目</span>
+            </div>
+            <div class="task-items">
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ 高強度企業專案群</div><div class="task-meta"><span class="meta-tag">🏢 跨部門</span><span class="meta-tag">🏷️ 產品/動畫</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>包含 Garena / MCC / ROG 等 8 個專案，全面主導 Computex 交片排程。</div></div>
+            </div>
+          </div>
+
+          <!-- 阿晃 -->
+          <div class="owner-block">
+            <div class="owner-header" onclick="openModal('阿晃')">
+              <div class="owner-avatar">晃</div>阿晃
+              <span class="badge-hot">🔥 高負載</span>
+              <span class="status-btn">🔍 狀態/亮點</span>
+              <span class="owner-count">3 項目</span>
+            </div>
+            <div class="task-items">
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ Msi 系列產品</div><div class="task-meta"><span class="meta-tag">🏢 廣告部</span><span class="meta-tag">🏷️ 產品</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>多項產品穩健邁向 Bcopy 與 Final。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3255 - TASA_太空中心簡介影片</div><div class="task-meta"><span class="meta-tag">🏢 廣告部</span><span class="meta-tag">🏷️ 廣告</span></div></div><span class="status s-done">已完成</span></div><div class="task-note"><span class="note-label">💬 本月：</span>推動定剪。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3517 - 星星電力形象影片</div><div class="task-meta"><span class="meta-tag">🏢 前製部</span><span class="meta-tag">🏷️ 廣告</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>與議文導演共同準備提案。</div></div>
+            </div>
+          </div>
+
+          <!-- 小高 -->
+          <div class="owner-block">
+            <div class="owner-header" onclick="openModal('小高')">
+              <div class="owner-avatar">高</div>小高
+              <span class="badge-mid">⚡ 進行中</span>
+              <span class="status-btn">🔍 狀態/亮點</span>
+              <span class="owner-count">2 項目</span>
+            </div>
+            <div class="task-items">
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3464 - ROG_20周年顯卡</div><div class="task-meta"><span class="meta-tag">🏢 前製部</span><span class="meta-tag">🏷️ 產品</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>大力扛起 Computex 死線衝刺。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ 國父紀念館投影案</div><div class="task-meta"><span class="meta-tag">🏢 前製部</span><span class="meta-tag">🏷️ 投影</span></div></div><span class="status s-pitch">提案中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>主導兩批概念圖與分鏡提案，配合策展商繳交細設報告書。</div></div>
+            </div>
+          </div>
+
+          <!-- 議文 -->
+          <div class="owner-block">
+            <div class="owner-header" onclick="openModal('議文')">
+              <div class="owner-avatar">議</div>議文
+              <span class="status-btn">🔍 狀態/亮點</span>
+              <span class="owner-count">1 項目</span>
+            </div>
+            <div class="task-items">
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3517 - 星星電力形象影片</div><div class="task-meta"><span>📅 5/19 提案</span><span class="meta-tag">🏢 前製部</span><span class="meta-tag">🏷️ 廣告</span></div></div><span class="status s-pitch">提案中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>正式加入提案戰線，與阿晃導演共同準備 5/19 的提案。</div></div>
+            </div>
+          </div>
+
+          <!-- 柏安 -->
+          <div class="owner-block">
+            <div class="owner-header" onclick="openModal('柏安')">
+              <div class="owner-avatar">柏</div>柏安
+              <span class="pill pill-a" style="font-size:11px;padding:3px 8px;margin-left:8px;">育嬰假中</span>
+              <span class="status-btn">🔍 狀態/亮點</span>
+              <span class="owner-count">0 項目</span>
+            </div>
+            <div class="task-items">
+              <!-- 育嬰假中無專案 -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ TAB 4：📸 精選集 (動態畫廊) ════ -->
+    <div id="tab-gallery" class="tab-panel">
+      <div class="gallery-scroll">
+
+        <div class="gallery-filter">
+          <span class="filter-label">篩選：</span>
+          <button class="filter-btn active" onclick="filterGallery('all',this)">🌟 全部截圖</button>
+          <button class="filter-btn" onclick="filterGallery('gal_design',this)">🎨 設計概念組</button>
+          <button class="filter-btn" onclick="filterGallery('gal_director',this)">🎬 導演組</button>
+        </div>
+
+        <div class="gallery-group" data-group="gal_design">
+          <div class="gallery-section-header">
+            <span style="font-size:20px">🎨</span>
+            <span class="gallery-section-title">設計概念組進度截圖</span>
+            <span class="gallery-count">點擊圖片放大檢視</span>
+          </div>
+          <div class="photo-grid" id="gal_design-container">
+             <!-- JavaScript 會將圖片渲染在這裡 -->
+          </div>
+          <button class="dynamic-add-btn" onclick="openAddImgModal('gal_design')">＋ 貼上設計組進度截圖</button>
+        </div>
+
+        <div class="gallery-group" data-group="gal_director">
+          <div class="gallery-section-header">
+            <span style="font-size:20px">🎬</span>
+            <span class="gallery-section-title">導演組進度截圖</span>
+            <span class="gallery-count">點擊圖片放大檢視</span>
+          </div>
+          <div class="photo-grid" id="gal_director-container">
+             <!-- JavaScript 會將圖片渲染在這裡 -->
+          </div>
+          <button class="dynamic-add-btn" onclick="openAddImgModal('gal_director')">＋ 貼上導演組進度截圖</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div> <!-- /main -->
+</div> <!-- /app-wrapper -->
+
+<!-- ══ Modal：新增截圖 ══ -->
+<div id="add-img-modal" class="modal-overlay" onclick="closeAddImgModal(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeAddImgModal()">×</button>
+    <h3 style="font-size:16px; font-weight:800; margin-bottom:16px; color:var(--slate-800);">🖼️ 新增截圖路徑</h3>
+    
+    <div class="form-group">
+      <label class="form-label">1. 選擇放置位置</label>
+      <select id="img-target-group" class="form-input">
+        <option value="cal_design">📅 行事曆 - 設計概念組排程</option>
+        <option value="cal_director">📅 行事曆 - 導演組排程</option>
+        <option value="gal_design">🎨 精選集 - 設計概念組進度</option>
+        <option value="gal_director">🎬 精選集 - 導演組進度</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">2. 標籤 / 負責人名稱</label>
+      <input type="text" id="img-label" class="form-input" placeholder="例如：語桐進度、4月專案排程..." />
+    </div>
+
+    <div class="form-group" style="margin-bottom:20px;">
+      <label class="form-label">3. 貼上截圖路徑 (支援多行一次貼上)</label>
+      <textarea id="img-urls" class="form-input" rows="4" placeholder="直接貼上 U:\_PC\Siya\...&#10;會自動幫你轉換為網頁格式！&#10;支援一次貼上多個網址，一行一個"></textarea>
+    </div>
+
+    <button onclick="saveImages()" class="form-btn">💾 儲存並顯示</button>
+  </div>
+</div>
+
+<!-- ══ Lightbox (畫廊與行事曆大圖用) ══ -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">×</button>
+  <button class="lightbox-nav prev" id="lb-prev" onclick="shiftLightbox(-1,event)">‹</button>
+  <button class="lightbox-nav next" id="lb-next" onclick="shiftLightbox(+1,event)">›</button>
+  <span   class="lightbox-counter" id="lb-counter"></span>
+  <img    class="lightbox-img" id="lb-img" src="" alt="" />
+  <div    class="lightbox-caption" id="lb-caption"></div>
+</div>
+
+<!-- ══ Modal (組員亮點用) ══ -->
+<div id="modal" class="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()" aria-label="關閉">×</button>
+    <div class="modal-header">
+      <div class="modal-avatar" id="m-avatar"></div>
+      <div>
+        <h2 class="modal-name" id="m-name"></h2>
+        <span id="m-badge" class="modal-badge"></span>
+      </div>
+    </div>
+    <div id="m-projects" class="modal-projects" style="display:none"></div>
+    <div class="modal-section modal-highlight">
+      <strong style="display:block;margin-bottom:3px">🎯 狀態亮點：</strong>
+      <span id="m-hl"></span>
+    </div>
+    <div class="modal-section modal-warning">
+      <strong style="display:block;margin-bottom:3px">⚠️ 注意事項：</strong>
+      <span id="m-warn"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ════════════════════════════════════════
+     § 1  動態截圖儲存與渲染 (自動化)
+  ════════════════════════════════════════ */
+  // 從瀏覽器記憶體中拿資料，沒有的話給個空陣列預設值
+  let galleryData = JSON.parse(localStorage.getItem('ms_gallery_data')) || {
+      cal_design: [],
+      cal_director: [],
+      gal_design: [],
+      gal_director: []
+  };
+
+  // 打開新增視窗
+  function openAddImgModal(defaultGroup) {
+      document.getElementById('img-target-group').value = defaultGroup;
+      document.getElementById('img-label').value = '';
+      document.getElementById('img-urls').value = '';
+      document.getElementById('add-img-modal').classList.add('active');
+  }
+
+  // 關閉新增視窗
+  function closeAddImgModal(e) {
+      if (e && e.target !== e.currentTarget && !e.target.classList.contains('modal-close')) return;
+      document.getElementById('add-img-modal').classList.remove('active');
+  }
+
+  // 儲存並渲染
+  function saveImages() {
+      const group = document.getElementById('img-target-group').value;
+      const label = document.getElementById('img-label').value.trim() || '未命名截圖';
+      const urlsText = document.getElementById('img-urls').value.trim();
+      
+      if(!urlsText) {
+          alert('請至少貼上一個圖片網址路徑！');
+          return;
+      }
+
+      // 將文字框內容按斷行切分，過濾掉空白行
+      const urls = urlsText.split('\n').map(u => u.trim()).filter(u => u !== '');
+      
+      urls.forEach(rawUrl => {
+          // 自動清除 Windows「複製為路徑」帶來的雙引號或單引號
+          let finalUrl = rawUrl.replace(/^["']|["']$/g, '');
+          
+          if (/^[a-zA-Z]:\\/.test(finalUrl)) {
+              finalUrl = 'file:///' + finalUrl.replace(/\\/g, '/');
+          }
+          galleryData[group].push({ label: label, url: finalUrl });
+      });
+
+      // 存入快取
+      localStorage.setItem('ms_gallery_data', JSON.stringify(galleryData));
+      
+      // 重新渲染畫面
+      renderGallery();
+      document.getElementById('add-img-modal').classList.remove('active');
+  }
+
+  // 刪除圖片
+  function deleteImage(group, index) {
+      if(confirm('確定要移除這張截圖嗎？')) {
+          galleryData[group].splice(index, 1);
+          localStorage.setItem('ms_gallery_data', JSON.stringify(galleryData));
+          renderGallery();
+      }
+  }
+
+  // 將資料畫到網頁上
+  function renderGallery() {
+      ['cal_design', 'cal_director', 'gal_design', 'gal_director'].forEach(group => {
+          const container = document.getElementById(group + '-container');
+          if(!container) return;
+          
+          container.innerHTML = ''; // 清空原本的 HTML
+          
+          // 如果沒有資料，顯示提示
+          if(galleryData[group].length === 0) {
+              container.innerHTML = `
+                <div class="photo-placeholder" style="border-radius: var(--radius-md); min-height: 150px;">
+                    <span style="font-size:32px;">📸</span>
+                    <b>目前尚無截圖</b>
+                    <span style="color:var(--muted); font-size:11px;">請點擊下方按鈕貼上路徑</span>
+                </div>`;
+              return;
+          }
+
+          galleryData[group].forEach((item, index) => {
+              const card = document.createElement('div');
+              const isCalendar = group.startsWith('cal_');
+              
+              card.className = isCalendar ? 'calendar-hero-img' : 'photo-card';
+              card.setAttribute('data-label', item.label);
+              
+              // 點擊事件：若點到刪除鍵則中斷，否則開燈箱
+              card.onclick = (e) => {
+                  if(e.target.classList.contains('delete-btn')) return;
+                  isCalendar ? openLightboxSingle(card) : openLightbox(card);
+              };
+
+              card.innerHTML = `
+                  <img src="${item.url}" alt="${item.label}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                  <div class="photo-placeholder" style="display:none; position: absolute; inset:0;">
+                      <span>⚠️</span><b style="color:var(--rose)">圖片無法載入</b>
+                      <code style="word-break: break-all; padding: 0 10px;">${item.url}</code>
+                      <span style="font-size:10px; color:var(--muted); margin-top:4px;">請確認是否有加上 .jpg/.png，或內網是否連線</span>
+                  </div>
+                  ${isCalendar ? `<span class="overlay-hint">🔍 點擊放大檢視</span>` : `<div class="photo-label">${item.label}</div>`}
+                  <button class="delete-btn" onclick="deleteImage('${group}', ${index})" title="移除圖片">✖</button>
+              `;
+              
+              // Hover 時顯示刪除按鈕
+              card.onmouseenter = () => { const db = card.querySelector('.delete-btn'); if(db) db.style.display = 'flex'; };
+              card.onmouseleave = () => { const db = card.querySelector('.delete-btn'); if(db) db.style.display = 'none'; };
+
+              container.appendChild(card);
+          });
+      });
+  }
+
+  /* ════════════════════════════════════════
+     § 2  縮放（transform scale，防跑版）
+  ════════════════════════════════════════ */
+  let zoom = parseFloat(localStorage.getItem('ms_zoom') || '1');
+
+  function applyZoom() {
+    const app = document.getElementById('app-wrapper');
+    if (!app) return;
+    app.style.transform = `scale(${zoom})`;
+    app.style.width     = `${100 / zoom}vw`;
+    app.style.height    = `${100 / zoom}vh`;
+    const zoomLevelEl = document.getElementById('zoom-level');
+    if (zoomLevelEl) zoomLevelEl.textContent = Math.round(zoom * 100) + '%';
+  }
+
+  function changeZoom(delta) {
+    zoom = parseFloat(Math.min(2, Math.max(0.4, zoom + delta)).toFixed(1));
+    applyZoom();
+    localStorage.setItem('ms_zoom', zoom);
+  }
+
+  /* ════════════════════════════════════════
+     § 3  Tab 切換 (安全防呆版)
+  ════════════════════════════════════════ */
+  function switchTab(name, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => {
+      if (p && p.classList) p.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      if (b && b.classList) {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      }
+    });
+    
+    const targetPanel = document.getElementById('tab-' + name);
+    if (targetPanel && targetPanel.classList) {
+      targetPanel.classList.add('active');
+    }
+    
+    if (btn && btn.classList) {
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+    }
+  }
+
+  /* ════════════════════════════════════════
+     § 4  可拖動分隔線 (含 zoom 座標補償)
+  ════════════════════════════════════════ */
+  function initSplitter(splitterId, leftId, storageKey) {
+    const sp   = document.getElementById(splitterId);
+    const left = document.getElementById(leftId);
+    if (!sp || !left) return;
+
+    const saved = localStorage.getItem(storageKey);
+    if (saved) { left.style.width = saved; left.style.flex = 'none'; }
+
+    let active = false;
+
+    function start() {
+      active = true;
+      sp.classList.add('dragging');
+      document.body.style.userSelect   = 'none';
+      document.body.style.cursor       = 'col-resize';
+    }
+
+    function move(clientX) {
+      if (!active) return;
+      const z         = parseFloat(document.getElementById('app-wrapper').style.transform.replace('scale(', '').replace(')', '')) || 1;
+      const container = left.parentElement.getBoundingClientRect();
+      const logicalX  = (clientX - container.left) / z;
+      const minW = 200, maxW = container.width / z * 0.72;
+      left.style.width = Math.min(maxW, Math.max(minW, logicalX)) + 'px';
+      left.style.flex  = 'none';
+    }
+
+    function end() {
+      if (!active) return;
+      active = false;
+      sp.classList.remove('dragging');
+      document.body.style.userSelect = '';
+      document.body.style.cursor     = '';
+      localStorage.setItem(storageKey, left.style.width);
+    }
+
+    sp.addEventListener('mousedown',  e => { e.preventDefault(); start(); });
+    document.addEventListener('mousemove',  e => move(e.clientX));
+    document.addEventListener('mouseup',    () => end());
+
+    sp.addEventListener('touchstart', e => { e.preventDefault(); start(); }, { passive: false });
+    document.addEventListener('touchmove',  e => { if (active) { e.preventDefault(); move(e.touches[0].clientX); } }, { passive: false });
+    document.addEventListener('touchend',   () => end());
+  }
+
+  /* ════════════════════════════════════════
+     § 5  複製路徑
+  ════════════════════════════════════════ */
+  function copyPath(btn) {
+    const path = btn.dataset.path;
+    const span = btn.querySelector('span') || btn;
+    const orig = span.textContent;
+
+    const exec = () => {
+      const ta = document.createElement('textarea');
+      ta.value = path;
+      ta.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (_) { alert('複製失敗，請手動複製！'); }
+      document.body.removeChild(ta);
+    };
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(path).then(() => {}).catch(exec);
+    } else {
+      exec();
+    }
+
+    span.textContent = '✅ 已複製！';
+    setTimeout(() => { span.textContent = orig; }, 2000);
+  }
+
+  /* ════════════════════════════════════════
+     § 6  Modal（成員狀態彈窗）
+  ════════════════════════════════════════ */
+  const MEMBERS = {
+    '語桐': { badge:'Tech/Support', bg:'var(--indigo-m)', fg:'var(--indigo)', hl:'極限救火《Msi_Titan》產出 ColorScript；親自介入《全支付》調度與 QC。', warn:'兼顧自身高壓產出與管理把關，需高度留意工作負載與精力消耗。' },
+    '家綺': { badge:'Concept',      bg:'var(--amber-m)',  fg:'var(--amber)',  hl:'靈活應變 Gemini 改版，改以 3D 模型輔助《全支付》日本卡；準備《Acer_PL7》常服角色。', warn:'AI 工具不穩定時會直接影響產出，需隨時備妥替代方案。' },
+    '芝翊': { badge:'Scene',        bg:'var(--sky-m)',    fg:'var(--sky)',    hl:'穩健推進《故宮》9 張 SF 分層；《RogT1》快速調整 Layout 並準備直橫雙版本。', warn:'頻繁應對客戶選擇變更與社群規格調整，需保持極高的排版彈性。' },
+    '婕㚬': { badge:'AI/3D',        bg:'var(--emerald-m)',fg:'var(--emerald)',hl:'《黑白清道夫》展現驚人手速，單日完成 5 角色邊框勾勒；負責《Acer_PL7》武器設計。', warn:'《Rog_20th》正片分鏡面臨反饋修改暫停，需留意卡關導致後續時程壓縮。' },
+    '士堯': { badgeText: 'Concept / 新成員', badgeBg: 'var(--amber-m)', badgeColor: 'var(--amber)', highlight: '負責多卡《Rog20thLineUp》3D正片、Teaser Concept。', warning: '初期有點難掌握PS PhotoBash，場景、設計等易失深度層次，還在努力熟悉工作流程和合適的工具使用方式。' },
+    '苡安': { badgeText: 'Char/UI / 新成員', badgeBg: '#e2e8f0', badgeColor: '#475569', highlight: '《全支付》分鏡過關~畫得很有生命力；《國館》分鏡理解極佳；《故宮》靈猴生動加上玉器材質。', warning: '分鏡透視易誇張致3D難執行；時程掌控可優化；PS工具還在初步理解階段，逐步熟悉中。' },
+    '劭謙': { badge:'HEAVY（重度負載）', bg:'var(--rose-m)',  fg:'var(--rose)',  proj:'Garena / MCC / ROG等', hl:'全面主導 Computex 多案交片排程，精準規劃 Acopy/Final 死線。', warn:'高達 8 個高強度企業專案集中於五月中下旬交付，需嚴防多線作業混亂或方向失焦。' },
+    '阿晃': { badge:'PROD（穩健製作）', bg:'var(--emerald-m)',fg:'var(--emerald)',proj:'TASA / Msi等', hl:'《Msi》多項產品穩健邁向 Bcopy 與 Final；推動《TASA》定剪與《星星電力》提案。', warn:'五月上中旬面臨多支影片同時 Final 交片潮，需嚴格控管後端動畫與合成的時程。' },
+    '小高': { badge:'PITCH / Ongoing', bg:'var(--sky-m)',    fg:'var(--sky)',   proj:'ROG顯卡 / 國館 / Innodisk', hl:'大力扛起 Computex《ROG顯卡》死線衝刺；主導《國館》兩批概念圖與分鏡提案。', warn:'《國館》屬大型公部門展演，需配合策展商繳交細設報告書，需為行政審查預留時間。' },
+    '議文': { badge:'PITCH（新血加入）', bg:'var(--sky-m)',    fg:'var(--sky)',   proj:'星星電力', hl:'正式加入提案戰線，與阿晃導演共同準備 5/19 的《星星電力》提案。', warn:'作為新加入戰力，需與團隊密切對焦提案素材的進度與簡報方向。' },
+    '柏安': { badge:'HANDOVER（育嬰假）', bg:'var(--amber-m)', fg:'var(--amber)', proj:'專案交接', hl:'已於月初順利交接《Rog20th顯卡》等專案，並正式開始休育嬰假。', warn:'團隊需適應在少一名資深導演情況下的量產節奏。' },
+  };
+
+  function openModal(name) {
+    const d = MEMBERS[name];
+    if (!d) { console.warn('找不到成員資料：' + name); return; }
+
+    document.getElementById('m-avatar').textContent = name.charAt(0);
+    document.getElementById('m-name').textContent   = name;
+
+    const badge = document.getElementById('m-badge');
+    if (badge) {
+      badge.innerText              = d.badge || d.badgeText;
+      badge.style.backgroundColor  = d.bg || d.badgeBg;
+      badge.style.color            = d.fg || d.badgeColor;
+    }
+
+    const proj = document.getElementById('m-projects');
+    if (proj) {
+      if (d.proj || d.projects) {
+        proj.style.display = 'block';
+        proj.innerHTML     = `<strong>主扛專案：</strong><br>${d.proj || d.projects}`;
+      } else {
+        proj.style.display = 'none';
+      }
+    }
+
+    const greenHighlight = document.getElementById('m-hl');
+    if(greenHighlight) greenHighlight.innerText = d.hl || d.highlight;
+    
+    const redWarning = document.getElementById('m-warn');
+    if(redWarning) redWarning.innerText   = d.warn || d.warning;
+    
+    document.getElementById('modal').classList.add('active');
+  }
+
+  function closeModal(e) {
+    if (!e || e.target === e.currentTarget || (e.target.closest && e.target.closest('.modal-close'))) {
+      document.getElementById('modal').classList.remove('active');
+    }
+  }
+
+  /* ════════════════════════════════════════
+     § 7  畫廊：篩選 / 燈箱
+  ════════════════════════════════════════ */
+
+  function filterGallery(group, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    document.querySelectorAll('.gallery-group').forEach(g => {
+      if (group === 'all' || g.dataset.group === group) {
+        g.style.display = '';
+      } else {
+        g.style.display = 'none';
+      }
+    });
+  }
+
+  let lbGroup   = [];
+  let lbIndex   = 0;
+
+  function openLightbox(card) {
+    const grid  = card.closest('.photo-grid');
+    if (!grid) return openLightboxSingle(card); 
+
+    const img = card.querySelector('img');
+    if (!img || !img.getAttribute('src')) {
+        alert("尚未設定圖片，請點擊下方的「＋ 新增截圖」按鈕！");
+        return;
+    }
+    if (img.style.display === 'none') {
+        alert("圖片路徑無效或無法讀取，請檢查副檔名是否為 .jpg / .png，或重新設定路徑。");
+        return;
+    }
+
+    lbGroup = [...grid.querySelectorAll('.photo-card')].filter(c => {
+        const i = c.querySelector('img');
+        return i && i.getAttribute('src') && i.style.display !== 'none';
+    });
+    
+    if(lbGroup.length === 0) lbGroup = [card];
+    
+    lbIndex = lbGroup.indexOf(card);
+    if(lbIndex === -1) lbIndex = 0;
+    
+    document.getElementById('lb-prev').style.display = lbGroup.length > 1 ? 'flex' : 'none';
+    document.getElementById('lb-next').style.display = lbGroup.length > 1 ? 'flex' : 'none';
+    
+    renderLightbox();
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function openLightboxSingle(card) {
+    const img = card.querySelector('img');
+    if (!img || !img.getAttribute('src')) {
+        alert("尚未設定圖片，請點擊下方的「＋ 貼上截圖」按鈕！");
+        return;
+    }
+    if (img.style.display === 'none') {
+        alert("圖片路徑無效或無法讀取，請檢查副檔名是否為 .jpg / .png，或重新設定路徑。");
+        return;
+    }
+    
+    lbGroup = [card];
+    lbIndex = 0;
+    
+    document.getElementById('lb-prev').style.display = 'none';
+    document.getElementById('lb-next').style.display = 'none';
+    
+    renderLightbox();
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function renderLightbox() {
+    if(lbGroup.length === 0) return;
+    const card    = lbGroup[lbIndex];
+    const img     = card.querySelector('img');
+    const caption = card.getAttribute('data-label') || '';
+    
+    document.getElementById('lb-img').src         = img.src;
+    document.getElementById('lb-img').alt         = caption;
+    document.getElementById('lb-caption').textContent = caption;
+    
+    const counterEl = document.getElementById('lb-counter');
+    if(lbGroup.length > 1) {
+        counterEl.style.display = 'block';
+        counterEl.textContent = `${lbIndex + 1} / ${lbGroup.length}`;
+    } else {
+        counterEl.style.display = 'none';
+    }
+  }
+
+  function shiftLightbox(dir, e) {
+    if (e) e.stopPropagation();
+    if (lbGroup.length <= 1) return;
+    lbIndex = (lbIndex + dir + lbGroup.length) % lbGroup.length;
+    renderLightbox();
+  }
+
+  function closeLightbox(e) {
+    if (e && e.target !== e.currentTarget && !e.target.classList.contains('lightbox-close')) return;
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => {
+    const lb = document.getElementById('lightbox');
+    if (lb && lb.classList.contains('active')) {
+      if (e.key === 'ArrowLeft' && lbGroup.length > 1)  shiftLightbox(-1);
+      if (e.key === 'ArrowRight' && lbGroup.length > 1) shiftLightbox(+1);
+      if (e.key === 'Escape')     closeLightbox({ target: lb, currentTarget: lb });
+    }
+  });
+
+
+  /* ════════════════════════════════════════
+     § 8  初始化
+  ════════════════════════════════════════ */
+  document.addEventListener('DOMContentLoaded', () => {
+    applyZoom();
+    initSplitter('sp-design',   'split-design-left',   'ms_split_design');
+    initSplitter('sp-director', 'split-director-left', 'ms_split_director');
+    
+    // 渲染自動儲存的畫廊圖片
+    renderGallery();
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+          closeModal();
+          closeAddImgModal();
+      }
+    });
+  });
+</script>
+</body>
+</html>
