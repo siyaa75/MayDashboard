@@ -48,7 +48,7 @@
       height: 100vh;
     }
 
-    #app {
+    #app-wrapper {
       display: flex;
       flex-direction: column;
       transform-origin: top left;
@@ -71,13 +71,6 @@
     .header h1 small  { font-weight: 400; font-size: 14px; color: var(--light); }
     .header .sub      { font-size: 12px; color: var(--muted); margin-top: 2px; }
     .header-right     { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-
-    .folder-btn {
-      background: var(--indigo-l); color: var(--indigo); border: 1px solid var(--indigo-m);
-      border-radius: 8px; padding: 6px 10px; text-decoration: none; font-weight: 700; font-size: 11px;
-      display: flex; align-items: center; gap: 4px; transition: all .2s; white-space: nowrap; cursor: pointer;
-    }
-    .folder-btn:hover { background: var(--indigo); color: white; }
 
     .zoom-ctrl { display: flex; align-items: center; gap: 6px; background: #f1f5f9; padding: 5px 10px; border-radius: 8px; border: 1px solid var(--border); }
     .zoom-btn { background: white; border: 1px solid #cbd5e1; border-radius: 5px; width: 26px; height: 26px; font-weight: 700; font-size: 13px; cursor: pointer; color: var(--text); transition: all .2s; display: flex; align-items: center; justify-content: center; }
@@ -116,8 +109,8 @@
     /* ════════════════════════════════════════
        § 5  Main & Tab Panels
     ════════════════════════════════════════ */
-    .main           { display: flex; flex: 1; overflow: hidden; }
-    .tab-panel      { display: none; width: 100%; height: 100%; overflow: hidden; }
+    .main           { display: flex; flex: 1; overflow: hidden; min-height: 0; }
+    .tab-panel      { display: none; width: 100%; height: 100%; overflow: hidden; min-height: 0; }
     .tab-panel.active { display: flex; flex-direction: column; }
 
     .overview-scroll { flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 16px; }
@@ -125,40 +118,24 @@
     /* ════════════════════════════════════════
        § 6  Split Layout（可拖動分隔線）
     ════════════════════════════════════════ */
-    .split-wrap   { display: flex; width: 100%; flex: 1; overflow: hidden; }
+    .split-wrap   { display: flex; width: 100%; flex: 1; overflow: hidden; min-height: 0; }
 
     .split-left { width: 340px; min-width: 220px; flex-shrink: 0; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+    .split-right { flex: 1; overflow-y: auto; padding: 18px; min-width: 0; }
 
     .splitter { width: 8px; flex-shrink: 0; background: var(--border); cursor: col-resize; position: relative; display: flex; align-items: center; justify-content: center; transition: background .15s; z-index: 10; }
     .splitter:hover, .splitter.dragging          { background: var(--indigo-m); }
     .splitter::after            { content: '⋮'; font-size: 13px; color: var(--light); pointer-events: none; }
     .splitter:hover::after, .splitter.dragging::after   { color: var(--indigo); }
 
-    .split-right { flex: 1; overflow-y: auto; padding: 18px; min-width: 0; }
-
     /* ════════════════════════════════════════
        § 7  Card 元件
     ════════════════════════════════════════ */
-    .card { background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-sm); }
+    .card { background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-sm); flex-shrink: 0; }
     .card-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 7px; }
     .bar   { width: 4px; height: 16px; border-radius: 3px; display: inline-block; }
     .bar-i { background: var(--indigo); }
     .bar-r { background: var(--rose); }
-
-    .card.risk-card { background: var(--rose-l); border-color: var(--rose-m); }
-    .overview-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; }
-    .risk-grid     { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .risk-col h4   { font-size: 12px; font-weight: 700; color: #9f1239; margin-bottom: 7px; }
-    .risk-item     { display: flex; gap: 6px; font-size: 12px; color: #be123c; line-height: 1.6; margin-bottom: 8px; }
-    .risk-tag      { background: #fecdd3; padding: 1px 5px; border-radius: 3px; font-size: 10px; font-weight: 700; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
-
-    .hl-list  { display: flex; flex-direction: column; gap: 10px; }
-    .hl-item  { padding: 11px 14px; border-radius: 9px; background: #f8fafc; border-left: 4px solid #cbd5e1; }
-    .hl-item.i { border-color: var(--indigo); }
-    .hl-item.a { border-color: #f59e0b; }
-    .hl-item.e { border-color: #10b981; }
-    .hl-item h3 { font-size: 13px; margin-bottom: 3px; }
-    .hl-item p  { font-size: 12px; color: var(--muted); line-height: 1.6; }
 
     /* ════════════════════════════════════════
        § 9  甜甜圈圖
@@ -177,12 +154,12 @@
     /* ════════════════════════════════════════
        § 10  專案清單
     ════════════════════════════════════════ */
-    .section-header  { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .section-header  { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-shrink: 0; }
     .section-title   { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 7px; }
-    .notion-link     { font-size: 11px; color: var(--indigo); text-decoration: none; background: var(--indigo-l); padding: 5px 10px; border-radius: var(--radius-sm); font-weight: 700; }
+    .notion-link     { font-size: 11px; color: var(--indigo); text-decoration: none; background: var(--indigo-l); padding: 5px 10px; border-radius: var(--radius-sm); font-weight: 700; flex-shrink: 0;}
     .notion-link:hover { background: var(--indigo-m); }
 
-    .owner-block  { margin-bottom: 22px; }
+    .owner-block  { margin-bottom: 22px; flex-shrink: 0;}
     .owner-header { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; font-size: 13px; font-weight: 700; border-bottom: 2px solid var(--border); padding-bottom: 7px; margin-bottom: 10px; cursor: pointer; transition: border-color .2s; }
     .owner-header:hover          { border-bottom-color: var(--indigo-m); }
     .owner-header:hover .status-btn { background: var(--indigo); color: white; }
@@ -194,12 +171,12 @@
     .status-btn   { font-size: 10px; background: var(--slate-100); color: var(--muted); padding: 3px 7px; border-radius: 9px; font-weight: 700; transition: all .2s; display: inline-flex; align-items: center; gap: 3px; }
 
     .task-items { display: flex; flex-direction: column; gap: 7px; padding-left: 11px; border-left: 2px solid #f1f5f9; margin-left: 8px; }
-    .task-card  { background: white; border: 1px solid var(--border); border-radius: 9px; padding: 10px 12px; display: flex; flex-direction: column; gap: 5px; transition: transform .15s, box-shadow .15s; }
+    .task-card  { background: white; border: 1px solid var(--border); border-radius: 9px; padding: 10px 12px; display: flex; flex-direction: column; gap: 5px; transition: transform .15s, box-shadow .15s; overflow: hidden;}
     .task-card:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
 
     .task-top     { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
     .task-info    { flex: 1; min-width: 0; }
-    .task-project { font-size: 14.5px; color: var(--indigo); font-weight: 800; margin-bottom: 4px; }
+    .task-project { font-size: 14.5px; color: var(--indigo); font-weight: 800; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
     .task-name    { font-size: 13px; font-weight: 600; line-height: 1.4; color: var(--slate-800); }
     .task-meta    { font-size: 11px; color: var(--light); margin-top: 2px; display: flex; gap: 6px; flex-wrap: wrap; }
 
@@ -211,11 +188,11 @@
     .s-done   { background: #dcfce7; color: #15803d; }
     .s-doing  { background: #e0f2fe; color: #0369a1; }
     .s-pitch  { background: #fef9c3; color: #a16207; }
-    .s-todo   { background: var(--slate-100); color: #475569; }
-    .s-pause  { background: #f3e8ff; color: #7e22ce; }
+    .s-todo   { background: #f1f5f9; color: #64748b; }
+    .s-pause  { background: #fce7f3; color: #be185d; }
 
     /* ════════════════════════════════════════
-       § 11  動態新增圖片與畫廊樣式
+       § 11  動態新增圖片與畫廊樣式 (效能優化版)
     ════════════════════════════════════════ */
     .gallery-scroll { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 28px; }
     
@@ -229,33 +206,35 @@
     .gallery-section-title  { font-size: 15px; font-weight: 800; }
     .gallery-count          { font-size: 12px; color: var(--light); font-weight: 400; }
 
-    /* 畫廊的卡片網格 */
     .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
 
-    .photo-card { position: relative; border-radius: var(--radius-md); overflow: hidden; aspect-ratio: 16/9; background: var(--slate-100); cursor: pointer; transition: transform .2s, box-shadow .2s; border: 1px solid var(--border); }
+    /* 效能優化：content-visibility 降低渲染負擔 */
+    .photo-card { content-visibility: auto; contain-intrinsic-size: 220px 124px; position: relative; border-radius: var(--radius-md); overflow: hidden; aspect-ratio: 16/9; background: var(--slate-100); cursor: pointer; transition: transform .2s, box-shadow .2s; border: 1px solid var(--border); }
     .photo-card:hover { transform: translateY(-3px) scale(1.02); box-shadow: var(--shadow-md); }
-    .photo-card img   { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; transition: filter .2s; }
-    .photo-card:hover img { filter: brightness(1.08); }
-
-    .photo-label { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,.75)); color: white; font-size: 12px; font-weight: 600; padding: 24px 12px 10px; line-height: 1.4; transition: opacity .2s; }
     
-    .photo-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, var(--slate-50), #e8edf2); color: var(--muted); font-size: 12px; text-align: center; padding: 16px; }
+    /* 載入中骨架屏與漸隱效果 */
+    .photo-card img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; opacity: 0; transition: opacity 0.4s ease, filter 0.2s; position: relative; z-index: 2; }
+    .photo-card:hover img { filter: brightness(1.08); }
+    .photo-card img.loaded { opacity: 1; }
+    .loader-spinner { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--slate-100); color: var(--light); font-size: 12px; font-weight: 600; z-index: 1; }
+
+    .photo-label { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,.75)); color: white; font-size: 12px; font-weight: 600; padding: 24px 12px 10px; line-height: 1.4; transition: opacity .2s; pointer-events: none; z-index: 3;}
+    
+    .photo-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, var(--slate-50), #e8edf2); color: var(--muted); font-size: 12px; text-align: center; padding: 16px; z-index: 0;}
     .photo-placeholder span { font-size: 28px; margin-bottom: 4px;}
     .photo-placeholder code { background: white; padding: 4px 8px; border-radius: 4px; font-size: 10px; color: var(--rose); margin-top: 4px; border: 1px solid var(--border); display:block; word-break: break-all;}
 
-    /* 行事曆大圖專用容器 */
-    .calendar-container { width: 100%; background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-sm); margin-bottom: 24px; }
+    .calendar-container { content-visibility: auto; width: 100%; background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow-sm); margin-bottom: 24px; flex-shrink: 0;}
     .calendar-hero-img { width: 100%; height: auto; min-height: 200px; background: var(--slate-100); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; border: 1px solid var(--border); position: relative; }
-    .calendar-hero-img img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.2s; }
+    .calendar-hero-img img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.2s; opacity: 0; transition: opacity 0.4s ease; z-index: 2; position: relative;}
+    .calendar-hero-img img.loaded { opacity: 1; }
     .calendar-hero-img:hover img { transform: scale(1.01); }
-    .calendar-hero-img .overlay-hint { position: absolute; bottom: 16px; right: 16px; background: rgba(0,0,0,0.6); color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+    .calendar-hero-img .overlay-hint { position: absolute; bottom: 16px; right: 16px; background: rgba(0,0,0,0.6); color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 3;}
     .calendar-hero-img:hover .overlay-hint { opacity: 1; }
 
-    /* 動態新增按鈕 */
     .dynamic-add-btn { width: 100%; padding: 12px; margin-top: 12px; background: transparent; border: 2px dashed #cbd5e1; border-radius: var(--radius-md); color: var(--muted); font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.2s; }
     .dynamic-add-btn:hover { border-color: var(--indigo); color: var(--indigo); background: var(--indigo-l); }
     
-    /* 刪除按鈕 */
     .delete-btn { position: absolute; top: 8px; right: 8px; background: rgba(225,29,72,0.9); color: white; border: none; border-radius: 50%; width: 26px; height: 26px; cursor: pointer; font-size: 14px; z-index: 20; display: none; align-items: center; justify-content: center; transition: transform 0.1s; }
     .delete-btn:hover { transform: scale(1.1); background: rgba(225,29,72,1); }
 
@@ -264,21 +243,23 @@
     ════════════════════════════════════════ */
     .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.45); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity .2s; }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
-    .modal-box { background: white; border-radius: var(--radius-lg); width: 92%; max-width: 460px; padding: 24px; box-shadow: 0 12px 28px rgba(0,0,0,.14); transform: translateY(16px); transition: transform .25s; position: relative; }
+    .modal-box { background: white; border-radius: var(--radius-lg); width: 92%; max-width: 480px; padding: 24px; box-shadow: 0 12px 28px rgba(0,0,0,.14); transform: translateY(16px); transition: transform .25s; position: relative; }
     .modal-overlay.active .modal-box { transform: translateY(0); }
     .modal-close   { position: absolute; top: 16px; right: 16px; background: transparent; border: none; font-size: 22px; color: var(--light); cursor: pointer; line-height: 1; }
     .modal-close:hover { color: var(--rose); }
 
-    .modal-header  { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .modal-header  { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
     .modal-avatar  { width: 42px; height: 42px; border-radius: 50%; background: var(--indigo-l); color: var(--indigo); font-size: 17px; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 2px solid var(--indigo-m); flex-shrink: 0; }
     .modal-name    { font-size: 17px; font-weight: 800; margin: 0; }
     .modal-badge   { font-size: 11px; padding: 2px 7px; border-radius: 5px; font-weight: 700; display: inline-block; margin-top: 5px; }
-    .modal-section { padding: 11px 14px; border-radius: 8px; margin-bottom: 9px; line-height: 1.6; font-size: 13px; }
-    .modal-hl      { background: var(--emerald-l); border: 1px solid var(--emerald-m); color: #065f46; }
-    .modal-warn    { background: var(--rose-l); border: 1px solid var(--rose-m); color: #9f1239; margin-bottom: 0; }
-    .modal-projects { font-size: 12px; color: var(--muted); margin-bottom: 12px; padding: 8px 12px; background: #f8fafc; border-radius: 7px; border: 1px dashed var(--border); font-weight: 600; }
+    
+    .modal-section { padding: 14px 16px; border-radius: 10px; margin-bottom: 12px; line-height: 1.6; font-size: 13.5px; }
+    .modal-highlight { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+    .modal-warning   { background: #fff1f2; border: 1px solid #fecdd3; color: #9f1239; margin-bottom: 0; }
+    .modal-section strong { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 14px; }
+    
+    .modal-projects { font-size: 12px; color: var(--muted); margin-bottom: 16px; padding: 8px 12px; background: #f8fafc; border-radius: 7px; border: 1px dashed var(--border); font-weight: 600; }
 
-    /* Lightbox */
     .lightbox { position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,.92); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .25s; }
     .lightbox.active { opacity: 1; pointer-events: auto; }
     .lightbox-img { max-width: 90vw; max-height: 85vh; border-radius: var(--radius-lg); box-shadow: 0 24px 48px rgba(0,0,0,.5); object-fit: contain; transform: scale(.92); transition: transform .25s; }
@@ -292,7 +273,6 @@
     .lightbox-nav.next { right: 20px; }
     .lightbox-counter  { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,.7); font-size: 13px; font-weight:bold;}
 
-    /* Form Elements for Add Modal */
     .form-group { margin-bottom: 14px; }
     .form-label { display: block; font-size: 13px; font-weight: 700; color: var(--slate-800); margin-bottom: 6px; }
     .form-input { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; font-family: inherit; font-size: 13px; }
@@ -325,9 +305,9 @@
       .photo-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
     }
 
-    ::-webkit-scrollbar        { width: 5px; height: 5px; }
+    ::-webkit-scrollbar        { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 6px; }
     ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
   </style>
 </head>
@@ -338,7 +318,7 @@
   <header class="header">
     <div>
       <h1>🧠 MOONSHINE 前製部 <small>| 2026 MAY</small></h1>
-      <div class="sub">數據更新：2026/05/31 18:00 (本地快取版)</div>
+      <div class="sub">數據更新：2026/06/05 by 思雅 </div>
     </div>
     <div class="header-right">
       <div class="zoom-ctrl">
@@ -401,18 +381,21 @@
     <!-- ════ TAB 2：設計概念組 ════ -->
     <div id="tab-design" class="tab-panel">
       <div class="split-wrap">
+        
         <div class="split-left" id="split-design-left">
+          
           <div class="card">
             <div class="card-title" style="font-size:12px">專案來源佔比</div>
             <div class="chart-wrap">
-              <div class="donut" style="background:conic-gradient(var(--indigo) 0% 40%, var(--emerald) 40% 80%, var(--amber) 80% 90%, var(--sky) 90% 100%)">
-                <div class="donut-inner">10<span>總計</span></div>
+              <div class="donut" style="background:conic-gradient(#3b82f6 0% 33.3%, #10b981 33.3% 66.6%, #eab308 66.6% 80%, #a855f7 80% 93.3%, #e2e8f0 93.3% 100%)">
+                <div class="donut-inner">15<span>Total</span></div>
               </div>
               <ul class="legend">
-                <li class="legend-item"><span class="dot" style="background:var(--indigo)"></span>動畫部 (4) 40%</li>
-                <li class="legend-item"><span class="dot" style="background:var(--emerald)"></span>廣告部 (4) 40%</li>
-                <li class="legend-item"><span class="dot" style="background:var(--amber)"></span>視效部 (1) 10%</li>
-                <li class="legend-item"><span class="dot" style="background:var(--sky)"></span>前製部 (1) 10%</li>
+                <li class="legend-item"><span class="dot" style="background:#3b82f6"></span>前製部 5 (33.3%)</li>
+                <li class="legend-item"><span class="dot" style="background:#10b981"></span>動畫部 5 (33.3%)</li>
+                <li class="legend-item"><span class="dot" style="background:#eab308"></span>廣告部 2 (13.3%)</li>
+                <li class="legend-item"><span class="dot" style="background:#a855f7"></span>視效部 2 (13.3%)</li>
+                <li class="legend-item"><span class="dot" style="background:#e2e8f0"></span>No 專案類型 1 (6.7%)</li>
               </ul>
             </div>
           </div>
@@ -420,16 +403,15 @@
           <div class="card">
             <div class="card-title" style="font-size:12px">專案類型分佈</div>
             <div class="chart-wrap">
-              <div class="donut" style="background:conic-gradient(var(--emerald) 0% 40%, var(--amber) 40% 60%, var(--sky) 60% 70%, #a855f7 70% 80%, var(--rose) 80% 90%, var(--light) 90% 100%)">
-                <div class="donut-inner">10<span>總計</span></div>
+              <div class="donut" style="background:conic-gradient(#a855f7 0% 33.3%, #10b981 33.3% 66.6%, #3b82f6 66.6% 80%, #eab308 80% 93.3%, #e2e8f0 93.3% 100%)">
+                <div class="donut-inner">15<span>Total</span></div>
               </div>
               <ul class="legend">
-                <li class="legend-item"><span class="dot" style="background:var(--emerald)"></span>產品 (4) 40%</li>
-                <li class="legend-item"><span class="dot" style="background:var(--amber)"></span>角色動畫 (2) 20%</li>
-                <li class="legend-item"><span class="dot" style="background:var(--sky)"></span>廣告 (1) 10%</li>
-                <li class="legend-item"><span class="dot" style="background:#a855f7"></span>投影 (1) 10%</li>
-                <li class="legend-item"><span class="dot" style="background:var(--rose)"></span>MV (1) 10%</li>
-                <li class="legend-item"><span class="dot" style="background:var(--light)"></span>補助案 (1) 10%</li>
+                <li class="legend-item"><span class="dot" style="background:#a855f7"></span>投影 5 (33.3%)</li>
+                <li class="legend-item"><span class="dot" style="background:#10b981"></span>產品 5 (33.3%)</li>
+                <li class="legend-item"><span class="dot" style="background:#3b82f6"></span>廣告 2 (13.3%)</li>
+                <li class="legend-item"><span class="dot" style="background:#eab308"></span>角色動畫 2 (13.3%)</li>
+                <li class="legend-item"><span class="dot" style="background:#e2e8f0"></span>No 專案類型 1 (6.7%)</li>
               </ul>
             </div>
           </div>
@@ -459,11 +441,19 @@
               <div class="owner-avatar">語</div>語桐
               <span class="badge-hot">🔥 高負載</span>
               <span class="status-btn">🔍 狀態/亮點</span>
-              <span class="owner-count">2 項目</span>
+              <span class="owner-count">10 專案</span>
             </div>
             <div class="task-items">
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3395 - Msi_TitanDragonEdition</div><div class="task-name">ColorScript 產出</div><div class="task-meta"><span>📅 五月中旬</span></div></div><span class="status s-doing">進行中</span></div></div>
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3449 - PxPay_plus</div><div class="task-name">SF調度與QC</div><div class="task-meta"><span>📅 五月下旬</span></div></div><span class="status s-doing">進行中</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ MsiMLG_KV角色設計</div><div class="task-name">MLG_機甲設計</div><div class="task-meta"><span>📅 06/02 → 06/05</span></div></div><span class="status s-doing">進行中</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3075 - 夢境_故宮_LED玉器案</div><div class="task-name">近景水墨卡新增 / Concept神獸紋玉環</div><div class="task-meta"><span>📅 04/27 → 06/05</span></div></div><span class="status s-doing">進行中</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ 許富凱演唱會一一五一拾-VCR</div><div class="task-name">腳本設計</div><div class="task-meta"><span>📅 06/04 → 06/09</span></div></div><span class="status s-todo">未開始</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3489 - 前製部_小原創計畫</div><div class="task-name">創意發想中</div><div class="task-meta"><span>📅 05/26 → 05/27</span></div></div><span class="status s-pause">暫停</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3500 - Acer_PredatorLeague7</div><div class="task-name">機甲/常服/分鏡反饋修改 / 男生武器 / 角色設計</div><div class="task-meta"><span>📅 05/06 → 06/03</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3135 - RogBrandVideo2026</div><div class="task-name">邊框設計 / 音樂季看板 / 演唱會舞台SF</div><div class="task-meta"><span>📅 05/04 → 06/01</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3449 - PxPay_plus</div><div class="task-name">遠景MP、部分卡反饋 / SF反饋修改</div><div class="task-meta"><span>📅 05/11 → 05/28</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3395 - Msi_TitanDragonEdition</div><div class="task-name">ColorScript*5 / 星雲Concept</div><div class="task-meta"><span>📅 05/11 → 05/22</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3478 - Rog_20thAnniversaryLineup</div><div class="task-name">3D正片_Concept反饋修改</div><div class="task-meta"><span>📅 05/15</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3438 - 2026 OPENDAY (MCC)</div><div class="task-name">簡報內頁設計</div><div class="task-meta"><span>📅 04/28</span></div></div><span class="status s-done">已完成</span></div></div>
             </div>
           </div>
 
@@ -473,11 +463,14 @@
               <div class="owner-avatar">家</div>家綺
               <span class="badge-hot">🔥 高負載</span>
               <span class="status-btn">🔍 狀態/亮點</span>
-              <span class="owner-count">2 項目</span>
+              <span class="owner-count">5 專案</span>
             </div>
             <div class="task-items">
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3449 - PxPay_plus</div><div class="task-name">日本卡 3D 模型輔助</div><div class="task-meta"><span>📅 五月中旬</span></div></div><span class="status s-doing">進行中</span></div></div>
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3500 - Acer_PredatorLeague7</div><div class="task-name">常服角色設計</div><div class="task-meta"><span>📅 五月下旬</span></div></div><span class="status s-doing">進行中</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3500 - Acer_PredatorLeague7</div><div class="task-name">男女常服與武器設計 / 常服反饋修改</div><div class="task-meta"><span>📅 05/06 → 06/03</span></div></div><span class="status s-doing">進行中</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3075 - 夢境_故宮_LED玉器案</div><div class="task-name">近景水墨卡新增 / Concept蜜蠟松鹿長春山子</div><div class="task-meta"><span>📅 05/04 → 06/05</span></div></div><span class="status s-doing">進行中</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3449 - PxPay_plus</div><div class="task-name">遠景MP、部分卡反饋</div><div class="task-meta"><span>📅 05/13 → 05/28</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3516 - RogT1聯名顯卡</div><div class="task-name">顯卡反饋修改</div><div class="task-meta"><span>📅 05/14</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3135 - RogBrandVideo2026</div><div class="task-name">漫畫卡補一小格圖</div><div class="task-meta"><span>📅 05/14</span></div></div><span class="status s-done">已完成</span></div></div>
             </div>
           </div>
 
@@ -487,11 +480,15 @@
               <div class="owner-avatar">芝</div>芝翊
               <span class="badge-hot">🔥 高負載</span>
               <span class="status-btn">🔍 狀態/亮點</span>
-              <span class="owner-count">2 項目</span>
+              <span class="owner-count">6 專案</span>
             </div>
             <div class="task-items">
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3075 - 夢境_故宮_LED玉器案</div><div class="task-name">9張 SF 分層處理</div><div class="task-meta"><span>📅 五月中旬</span></div></div><span class="status s-doing">進行中</span></div></div>
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3516 - RogT1聯名顯卡</div><div class="task-name">Layout直橫版本調整</div><div class="task-meta"><span>📅 五月下旬</span></div></div><span class="status s-doing">進行中</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3500 - Acer_PredatorLeague7</div><div class="task-name">城市大場景Concept / 尾卡Concept</div><div class="task-meta"><span>📅 05/21 → 06/02</span></div></div><span class="status s-doing">進行中</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ MsiMLG_KV角色設計</div><div class="task-name">場景設計_再一版設計</div><div class="task-meta"><span>📅 06/02</span></div></div><span class="status s-todo">未開始</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3462 - PorcelainMG編輯專案</div><div class="task-name">9張SF設計</div><div class="task-meta"><span>📅 05/07 → 05/28</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3516 - RogT1聯名顯卡</div><div class="task-name">T1正片Concept / Concept_for AI動態</div><div class="task-meta"><span>📅 05/06 → 05/21</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3478 - Rog_20thAnniversaryLineup</div><div class="task-name">3D正片_Concept</div><div class="task-meta"><span>📅 04/27 → 05/12</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3464 - ROG_20周年顯卡</div><div class="task-name">Concept反饋修改</div><div class="task-meta"><span>📅 05/04</span></div></div><span class="status s-done">已完成</span></div></div>
             </div>
           </div>
 
@@ -501,12 +498,14 @@
               <div class="owner-avatar">婕</div>婕㚬
               <span class="badge-hot">🔥 高負載</span>
               <span class="status-btn">🔍 狀態/亮點</span>
-              <span class="owner-count">3 項目</span>
+              <span class="owner-count">5 專案</span>
             </div>
             <div class="task-items">
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3161 - 黑白清道夫</div><div class="task-name">5角色邊框勾勒</div><div class="task-meta"><span>📅 五月中旬</span></div></div><span class="status s-done">已完成</span></div></div>
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3500 - Acer_PredatorLeague7</div><div class="task-name">武器設計</div><div class="task-meta"><span>📅 五月下旬</span></div></div><span class="status s-doing">進行中</span></div></div>
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3478 - Rog_20thAnniversaryLineup</div><div class="task-name">正片分鏡修改</div><div class="task-meta"><span>📅 等待反饋</span></div></div><span class="status s-pause">暫停</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ MsiMLG_KV角色設計</div><div class="task-name">魔龍姬_角色盔甲造型設計</div><div class="task-meta"><span>📅 06/02 → 06/04</span></div></div><span class="status s-doing">進行中</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P2893 - 犢影_黑白清道夫</div><div class="task-name">五官輪廓+全身邊框 / 片頭場景線條 / 人物勾勒</div><div class="task-meta"><span>📅 05/21 → 06/02</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3500 - Acer_PredatorLeague7</div><div class="task-name">場景Concept*2 / 角色設計</div><div class="task-meta"><span>📅 05/06 → 06/01</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3478 - Rog_20thAnniversaryLineup</div><div class="task-name">正片與實拍分鏡(含反饋) / 3D正片_Concept</div><div class="task-meta"><span>📅 04/27 → 05/25</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3464 - ROG_20周年顯卡</div><div class="task-name">Concept反饋修改</div><div class="task-meta"><span>📅 05/04</span></div></div><span class="status s-done">已完成</span></div></div>
             </div>
           </div>
 
@@ -516,10 +515,16 @@
               <div class="owner-avatar">士</div>士堯
               <span class="badge-hot">🔥 高負載</span>
               <span class="status-btn">🔍 狀態/亮點</span>
-              <span class="owner-count">1 項目</span>
+              <span class="owner-count">7 專案</span>
             </div>
             <div class="task-items">
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3449 - PxPay_plus</div><div class="task-name">遠景MP與台灣/韓國卡建築反饋</div><div class="task-meta"><span>📅 五月下旬</span></div></div><span class="status s-doing">進行中</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ MsiMLG_KV角色設計</div><div class="task-name">MLG_背景設計</div><div class="task-meta"><span>📅 05/29 → 06/05</span></div></div><span class="status s-doing">進行中</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3500 - Acer_PredatorLeague7</div><div class="task-name">男生武器設計(十字弓)</div><div class="task-meta"><span>📅 05/22 → 06/01</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3457 - 國運之戰</div><div class="task-name">新聞Bar設計</div><div class="task-meta"><span>📅 05/29</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3449 - PxPay_plus</div><div class="task-name">遠景MP、部分卡反饋</div><div class="task-meta"><span>📅 05/13 → 05/28</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3478 - Rog_20thAnniversaryLineup</div><div class="task-name">3D正片_Concept</div><div class="task-meta"><span>📅 04/27 → 05/12</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3516 - RogT1聯名顯卡</div><div class="task-name">Concept_for AI動態 *6</div><div class="task-meta"><span>📅 05/06 → 05/11</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3464 - ROG_20周年顯卡</div><div class="task-name">Concept反饋修改</div><div class="task-meta"><span>📅 05/04</span></div></div><span class="status s-done">已完成</span></div></div>
             </div>
           </div>
 
@@ -529,11 +534,14 @@
               <div class="owner-avatar">苡</div>苡安
               <span class="badge-hot">🔥 高負載</span>
               <span class="status-btn">🔍 狀態/亮點</span>
-              <span class="owner-count">2 項目</span>
+              <span class="owner-count">5 專案</span>
             </div>
             <div class="task-items">
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3449 - PxPay_plus</div><div class="task-name">富士山及虎利表情多版本對焦</div><div class="task-meta"><span>📅 五月中旬</span></div></div><span class="status s-done">已完成</span></div></div>
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3075 - 夢境_故宮_LED玉器案</div><div class="task-name">協助 SF 分層處理</div><div class="task-meta"><span>📅 五月下旬</span></div></div><span class="status s-doing">進行中</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3500 - Acer_PredatorLeague7</div><div class="task-name">角色設計背面繪製</div><div class="task-meta"><span>📅 05/28 → 06/04</span></div></div><span class="status s-doing">進行中</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ 許富凱演唱會一一五一拾-VCR</div><div class="task-name">sf</div><div class="task-meta"><span>📅 06/04 → 06/12</span></div></div><span class="status s-todo">未開始</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3449 - PxPay_plus</div><div class="task-name">遠景MP、部分卡反饋</div><div class="task-meta"><span>📅 05/13 → 05/28</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3462 - PorcelainMG編輯專案</div><div class="task-name">9張SF設計</div><div class="task-meta"><span>📅 05/07 → 05/28</span></div></div><span class="status s-done">已完成</span></div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3075 - 夢境_故宮_LED玉器案</div><div class="task-name">Concept神獸紋玉環 - c13</div><div class="task-meta"><span>📅 04/27 → 05/07</span></div></div><span class="status s-done">已完成</span></div></div>
             </div>
           </div>
 
@@ -546,18 +554,20 @@
       <div class="split-wrap">
 
         <div class="split-left" id="split-director-left">
+          
           <div class="card">
             <div class="card-title" style="font-size:13px">專案來源佔比</div>
             <div class="chart-wrap">
-              <div class="donut" style="background:conic-gradient(var(--emerald) 0% 52.4%, var(--sky) 52.4% 71.4%, var(--indigo) 71.4% 85.7%, var(--light) 85.7% 95.2%, var(--amber) 95.2% 100%)">
-                <div class="donut-inner">21<span>總計</span></div>
+              <div class="donut" style="background:conic-gradient(#10b981 0% 38.5%, #3b82f6 38.5% 65.4%, #d946ef 65.4% 84.6%, #e2e8f0 84.6% 92.3%, #a8a29e 92.3% 96.1%, #f59e0b 96.1% 100%)">
+                <div class="donut-inner">26<span>Total</span></div>
               </div>
               <ul class="legend">
-                <li class="legend-item"><span class="dot" style="background:var(--emerald)"></span>廣告部 (11) 52.4%</li>
-                <li class="legend-item"><span class="dot" style="background:var(--sky)"></span>前製部 (4) 19%</li>
-                <li class="legend-item"><span class="dot" style="background:var(--indigo)"></span>動畫部 (3) 14.3%</li>
-                <li class="legend-item"><span class="dot" style="background:var(--light)"></span>其他 (2) 9.5%</li>
-                <li class="legend-item"><span class="dot" style="background:var(--amber)"></span>視效部 (1) 4.8%</li>
+                <li class="legend-item"><span class="dot" style="background:#10b981"></span>廣告部 10 (38.5%)</li>
+                <li class="legend-item"><span class="dot" style="background:#3b82f6"></span>前製部 7 (26.9%)</li>
+                <li class="legend-item"><span class="dot" style="background:#d946ef"></span>動畫部 5 (19.2%)</li>
+                <li class="legend-item"><span class="dot" style="background:#e2e8f0"></span>No 部門 2 (7.7%)</li>
+                <li class="legend-item"><span class="dot" style="background:#a8a29e"></span>其他 1 (3.8%)</li>
+                <li class="legend-item"><span class="dot" style="background:#f59e0b"></span>視效部 1 (3.8%)</li>
               </ul>
             </div>
           </div>
@@ -565,16 +575,17 @@
           <div class="card">
             <div class="card-title" style="font-size:13px">專案類型分佈</div>
             <div class="chart-wrap">
-              <div class="donut" style="background:conic-gradient(var(--emerald) 0% 47.6%, var(--sky) 47.6% 66.6%, var(--amber) 66.6% 76.1%, #a855f7 76.1% 85.6%, var(--light) 85.6% 95.1%, var(--rose) 95.1% 100%)">
-                <div class="donut-inner">21<span>總計</span></div>
+              <div class="donut" style="background:conic-gradient(#10b981 0% 42.3%, #c084fc 42.3% 57.7%, #e2e8f0 57.7% 69.2%, #3b82f6 69.2% 80.7%, #f1f5f9 80.7% 88.4%, #f59e0b 88.4% 96.1%, #a8a29e 96.1% 100%)">
+                <div class="donut-inner">26<span>Total</span></div>
               </div>
               <ul class="legend">
-                <li class="legend-item"><span class="dot" style="background:var(--emerald)"></span>產品 (10) 47.6%</li>
-                <li class="legend-item"><span class="dot" style="background:var(--sky)"></span>廣告 (4) 19%</li>
-                <li class="legend-item"><span class="dot" style="background:var(--amber)"></span>角色動畫 (2) 9.5%</li>
-                <li class="legend-item"><span class="dot" style="background:#a855f7"></span>投影 (2) 9.5%</li>
-                <li class="legend-item"><span class="dot" style="background:var(--light)"></span>互動/其它 (2) 9.5%</li>
-                <li class="legend-item"><span class="dot" style="background:var(--rose)"></span>MV (1) 4.8%</li>
+                <li class="legend-item"><span class="dot" style="background:#10b981"></span>產品 11 (42.3%)</li>
+                <li class="legend-item"><span class="dot" style="background:#c084fc"></span>投影 4 (15.4%)</li>
+                <li class="legend-item"><span class="dot" style="background:#e2e8f0"></span>其它 3 (11.5%)</li>
+                <li class="legend-item"><span class="dot" style="background:#3b82f6"></span>廣告 3 (11.5%)</li>
+                <li class="legend-item"><span class="dot" style="background:#f1f5f9"></span>No 專案類型 2 (7.7%)</li>
+                <li class="legend-item"><span class="dot" style="background:#f59e0b"></span>角色動畫 2 (7.7%)</li>
+                <li class="legend-item"><span class="dot" style="background:#a8a29e"></span>補助案 1 (3.8%)</li>
               </ul>
             </div>
           </div>
@@ -604,10 +615,15 @@
               <div class="owner-avatar">劭</div>劭謙
               <span class="badge-hot">🔥 高負載</span>
               <span class="status-btn">🔍 狀態/亮點</span>
-              <span class="owner-count">1 項目</span>
+              <span class="owner-count">6 項目</span>
             </div>
             <div class="task-items">
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ 高強度企業專案群</div><div class="task-meta"><span class="meta-tag">🏢 跨部門</span><span class="meta-tag">🏷️ 產品/動畫</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>包含 Garena / MCC / ROG 等 8 個專案，全面主導 Computex 交片排程。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3500 - Acer_PredatorLeague7</div><div class="task-meta"><span class="meta-tag">🏢 視效部</span><span class="meta-tag">🏷️ 角色動畫</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>明天內部討論，推進 Progress 20s 與 90s (角色模型完成預計 6/5)。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3466 - ROG_GC701 PC Controll</div><div class="task-meta"><span class="meta-tag">🏢 廣告部</span><span class="meta-tag">🏷️ 產品</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>PV SF2預計 6/1，Teaser Final 預計 6/5。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3422 - Garena新產品PV</div><div class="task-meta"><span class="meta-tag">🏢 動畫部</span><span class="meta-tag">🏷️ 角色動畫</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>明天要再更新一版串檔，Bcopy 預定 6/4，Final 6/12。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3395 - Msi_TitanDragonEdition</div><div class="task-meta"><span class="meta-tag">🏢 廣告部</span><span class="meta-tag">🏷️ 產品</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>還在微幅調整中。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3135 - RogBrandVideo2026</div><div class="task-meta"><span class="meta-tag">🏢 動畫部</span><span class="meta-tag">🏷️ 投影</span></div></div><span class="status s-done">已完成</span></div><div class="task-note"><span class="note-label">💬 本月：</span>5/25 正片Bcopy+30秒版本更新，6/1 Final出檔。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3478 - Rog_20thAnniversaryLineup</div><div class="task-meta"><span class="meta-tag">🏢 廣告部</span><span class="meta-tag">🏷️ 產品</span></div></div><span class="status s-done">飛奧</span></div><div class="task-note"><span class="note-label">💬 本月：</span>【Teaser 1 - LOGO篇】階段性推進中。</div></div>
             </div>
           </div>
 
@@ -617,12 +633,16 @@
               <div class="owner-avatar">晃</div>阿晃
               <span class="badge-hot">🔥 高負載</span>
               <span class="status-btn">🔍 狀態/亮點</span>
-              <span class="owner-count">3 項目</span>
+              <span class="owner-count">7 項目</span>
             </div>
             <div class="task-items">
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ Msi 系列產品</div><div class="task-meta"><span class="meta-tag">🏢 廣告部</span><span class="meta-tag">🏷️ 產品</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>多項產品穩健邁向 Bcopy 與 Final。</div></div>
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3255 - TASA_太空中心簡介影片</div><div class="task-meta"><span class="meta-tag">🏢 廣告部</span><span class="meta-tag">🏷️ 廣告</span></div></div><span class="status s-done">已完成</span></div><div class="task-note"><span class="note-label">💬 本月：</span>推動定剪。</div></div>
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3517 - 星星電力形象影片</div><div class="task-meta"><span class="meta-tag">🏢 前製部</span><span class="meta-tag">🏷️ 廣告</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>與議文導演共同準備提案。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3517 - 星星電力形象影片</div><div class="task-meta"><span class="meta-tag">🏢 前製部</span><span class="meta-tag">🏷️ 廣告</span></div></div><span class="status s-pitch">提案中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>等客戶回覆，預計 6/5 客戶腳本方向確定，6/24 提供 MB。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3516 - RogT1聯名顯卡</div><div class="task-meta"><span class="meta-tag">🏢 前製部</span><span class="meta-tag">🏷️ 產品</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>陸續確認中。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3427 - 地球館-CP4</div><div class="task-meta"><span class="meta-tag">🏢 動畫部</span><span class="meta-tag">🏷️ 投影</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>主要在這支陸續討論和進行中。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3255 - TASA_太空中心簡介影片</div><div class="task-meta"><span class="meta-tag">🏢 廣告部</span><span class="meta-tag">🏷️ 廣告</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>BCopy 預計 6/5，Final 預計 6/19。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3448 - Msi_CoreliquidE15</div><div class="task-meta"><span class="meta-tag">🏢 廣告部</span><span class="meta-tag">🏷️ 產品</span></div></div><span class="status s-done">已完成</span></div><div class="task-note"><span class="note-label">💬 本月：</span>Bcopy 5/7，Final 5/14 已達標。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3447 - Msi_Maestro900R</div><div class="task-meta"><span class="meta-tag">🏢 廣告部</span><span class="meta-tag">🏷️ 產品</span></div></div><span class="status s-done">已完成</span></div><div class="task-note"><span class="note-label">💬 本月：</span>Bcopy 5/7，Final 5/14 已達標。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3446 - Msi_MegSeries</div><div class="task-meta"><span class="meta-tag">🏢 廣告部</span><span class="meta-tag">🏷️ 產品</span></div></div><span class="status s-done">已完成</span></div><div class="task-note"><span class="note-label">💬 本月：</span>Bcopy 5/7，Final 5/14 已達標。</div></div>
             </div>
           </div>
 
@@ -632,11 +652,17 @@
               <div class="owner-avatar">高</div>小高
               <span class="badge-mid">⚡ 進行中</span>
               <span class="status-btn">🔍 狀態/亮點</span>
-              <span class="owner-count">2 項目</span>
+              <span class="owner-count">8 項目</span>
             </div>
             <div class="task-items">
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3464 - ROG_20周年顯卡</div><div class="task-meta"><span class="meta-tag">🏢 前製部</span><span class="meta-tag">🏷️ 產品</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>大力扛起 Computex 死線衝刺。</div></div>
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ 國父紀念館投影案</div><div class="task-meta"><span class="meta-tag">🏢 前製部</span><span class="meta-tag">🏷️ 投影</span></div></div><span class="status s-pitch">提案中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>主導兩批概念圖與分鏡提案，配合策展商繳交細設報告書。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3509 - 瀚草工具討論編輯專案</div><div class="task-meta"><span class="meta-tag">🏢 其他</span><span class="meta-tag">🏷️ 其它</span></div></div><span class="status s-pitch">提案中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>提案討論中。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ 高雄電影補助</div><div class="task-meta"><span class="meta-tag">🏢 未定</span><span class="meta-tag">🏷️ 未定</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>持續進行中。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ Positive 起死回生之路。</div><div class="task-meta"><span class="meta-tag">🏢 前製部</span><span class="meta-tag">🏷️ 其它</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>之後繼續進行，以後約每周例會。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3501 - ROG_New ROG Xbox Ally</div><div class="task-meta"><span class="meta-tag">🏢 廣告部</span><span class="meta-tag">🏷️ 產品</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>各階段情境圖與影片提交，影片 Final 5/22。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3464 - ROG_20周年顯卡</div><div class="task-meta"><span class="meta-tag">🏢 前製部</span><span class="meta-tag">🏷️ 產品</span></div></div><span class="status s-doing">進行中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>反饋說明和調整討論，Acopy 預計 6/11。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3413 - ROGEqualizerVideo</div><div class="task-meta"><span class="meta-tag">🏢 前製部</span><span class="meta-tag">🏷️ 產品</span></div></div><span class="status s-pause">暫停</span></div><div class="task-note"><span class="note-label">💬 本月：</span>專案目前暫停中。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3475 - Acer_2026TravelMateP614AI</div><div class="task-meta"><span class="meta-tag">🏢 廣告部</span><span class="meta-tag">🏷️ 產品</span></div></div><span class="status s-done">已完成</span></div><div class="task-note"><span class="note-label">💬 本月：</span>Final 5/20 已達標。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3441 - Innodisk2026</div><div class="task-meta"><span class="meta-tag">🏢 廣告部</span><span class="meta-tag">🏷️ 廣告</span></div></div><span class="status s-done">已完成</span></div><div class="task-note"><span class="note-label">💬 本月：</span>Final 5/27 已達標。</div></div>
             </div>
           </div>
 
@@ -644,11 +670,16 @@
           <div class="owner-block">
             <div class="owner-header" onclick="openModal('議文')">
               <div class="owner-avatar">議</div>議文
+              <span class="badge-mid" style="background:#dcfce7; color:#15803d;">🟢 支援中</span>
               <span class="status-btn">🔍 狀態/亮點</span>
-              <span class="owner-count">1 項目</span>
+              <span class="owner-count">5 項目</span>
             </div>
             <div class="task-items">
-              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3517 - 星星電力形象影片</div><div class="task-meta"><span>📅 5/19 提案</span><span class="meta-tag">🏢 前製部</span><span class="meta-tag">🏷️ 廣告</span></div></div><span class="status s-pitch">提案中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>正式加入提案戰線，與阿晃導演共同準備 5/19 的提案。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ P3517 - 星星電力形象影片</div><div class="task-meta"><span class="meta-tag">🏢 前製部</span><span class="meta-tag">🏷️ 廣告</span></div></div><span class="status s-pitch">提案中</span></div><div class="task-note"><span class="note-label">💬 本月：</span>與阿晃導演共同等客戶回覆，6/5 客戶腳本方向確定。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ 大凶幕後剪輯</div><div class="task-meta"><span class="meta-tag">🏢 未定</span><span class="meta-tag">🏷️ 未定</span></div></div><span class="status s-done">已完成</span></div><div class="task-note"><span class="note-label">💬 本月：</span>Mocap 花絮剪輯完成！</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ 作品集剪輯</div><div class="task-meta"><span class="meta-tag">🏢 前製部</span><span class="meta-tag">🏷️ 其它</span></div></div><span class="status s-done">已完成</span></div><div class="task-note"><span class="note-label">💬 本月：</span>2版出完。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ 桃園鐵道_沉浸劇場動</div><div class="task-meta"><span class="meta-tag">🏢 動畫部</span><span class="meta-tag">🏷️ 投影</span></div></div><span class="status s-pause" style="background:#fee2e2; color:#be123c;">掰掰</span></div><div class="task-note"><span class="note-label">💬 本月：</span>專案 Pending 狀態。</div></div>
+              <div class="task-card"><div class="task-top"><div class="task-info"><div class="task-project">↗ 高鐵裸視3D</div><div class="task-meta"><span class="meta-tag">🏢 前製部</span><span class="meta-tag">🏷️ 投影</span></div></div><span class="status s-done">飛奧</span></div><div class="task-note"><span class="note-label">💬 本月：</span>專案飛奧。</div></div>
             </div>
           </div>
 
@@ -656,7 +687,7 @@
           <div class="owner-block">
             <div class="owner-header" onclick="openModal('柏安')">
               <div class="owner-avatar">柏</div>柏安
-              <span class="pill pill-a" style="font-size:11px;padding:3px 8px;margin-left:8px;">育嬰假中</span>
+              <span class="pill pill-a" style="font-size:11px;padding:3px 8px;margin-left:8px; background:var(--amber-l); color:var(--amber); border-radius:4px;">育嬰假中</span>
               <span class="status-btn">🔍 狀態/亮點</span>
               <span class="owner-count">0 項目</span>
             </div>
@@ -686,21 +717,69 @@
             <span class="gallery-section-title">設計概念組進度截圖</span>
             <span class="gallery-count">點擊圖片放大檢視</span>
           </div>
-          <div class="photo-grid" id="gal_design-container">
-             <!-- JavaScript 會將圖片渲染在這裡 -->
+
+          <!-- 設計組：語桐 -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--indigo); border-bottom: 1px solid var(--border); padding-bottom: 4px;">▶ 語桐 進度</h4>
+            <div class="photo-grid" id="gal_design_yutong-container"></div>
           </div>
+          <!-- 設計組：家綺 -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--indigo); border-bottom: 1px solid var(--border); padding-bottom: 4px;">▶ 家綺 進度</h4>
+            <div class="photo-grid" id="gal_design_jiaqi-container"></div>
+          </div>
+          <!-- 設計組：芝翊 -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--indigo); border-bottom: 1px solid var(--border); padding-bottom: 4px;">▶ 芝翊 進度</h4>
+            <div class="photo-grid" id="gal_design_zhiyi-container"></div>
+          </div>
+          <!-- 設計組：婕㚬 -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--indigo); border-bottom: 1px solid var(--border); padding-bottom: 4px;">▶ 婕㚬 進度</h4>
+            <div class="photo-grid" id="gal_design_jieyun-container"></div>
+          </div>
+          <!-- 設計組：士堯 -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--indigo); border-bottom: 1px solid var(--border); padding-bottom: 4px;">▶ 士堯 進度</h4>
+            <div class="photo-grid" id="gal_design_shiyao-container"></div>
+          </div>
+          <!-- 設計組：苡安 -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--indigo); border-bottom: 1px solid var(--border); padding-bottom: 4px;">▶ 苡安 進度</h4>
+            <div class="photo-grid" id="gal_design_yian-container"></div>
+          </div>
+          
           <button class="dynamic-add-btn" onclick="openAddImgModal('gal_design')">＋ 貼上設計組進度截圖</button>
         </div>
 
         <div class="gallery-group" data-group="gal_director">
-          <div class="gallery-section-header">
+          <div class="gallery-section-header" style="margin-top: 20px;">
             <span style="font-size:20px">🎬</span>
             <span class="gallery-section-title">導演組進度截圖</span>
             <span class="gallery-count">點擊圖片放大檢視</span>
           </div>
-          <div class="photo-grid" id="gal_director-container">
-             <!-- JavaScript 會將圖片渲染在這裡 -->
+
+          <!-- 導演組：劭謙 -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--emerald); border-bottom: 1px solid var(--border); padding-bottom: 4px;">▶ 劭謙 進度</h4>
+            <div class="photo-grid" id="gal_director_shaoqian-container"></div>
           </div>
+          <!-- 導演組：阿晃 -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--emerald); border-bottom: 1px solid var(--border); padding-bottom: 4px;">▶ 阿晃 進度</h4>
+            <div class="photo-grid" id="gal_director_ahuang-container"></div>
+          </div>
+          <!-- 導演組：小高 -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--emerald); border-bottom: 1px solid var(--border); padding-bottom: 4px;">▶ 小高 進度</h4>
+            <div class="photo-grid" id="gal_director_xiaogao-container"></div>
+          </div>
+          <!-- 導演組：議文 -->
+          <div style="margin-bottom: 24px;">
+            <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--emerald); border-bottom: 1px solid var(--border); padding-bottom: 4px;">▶ 議文 進度</h4>
+            <div class="photo-grid" id="gal_director_yiwen-container"></div>
+          </div>
+
           <button class="dynamic-add-btn" onclick="openAddImgModal('gal_director')">＋ 貼上導演組進度截圖</button>
         </div>
 
@@ -717,18 +796,32 @@
     <h3 style="font-size:16px; font-weight:800; margin-bottom:16px; color:var(--slate-800);">🖼️ 新增截圖路徑</h3>
     
     <div class="form-group">
-      <label class="form-label">1. 選擇放置位置</label>
+      <label class="form-label">1. 選擇放置位置與對象</label>
       <select id="img-target-group" class="form-input">
-        <option value="cal_design">📅 行事曆 - 設計概念組排程</option>
-        <option value="cal_director">📅 行事曆 - 導演組排程</option>
-        <option value="gal_design">🎨 精選集 - 設計概念組進度</option>
-        <option value="gal_director">🎬 精選集 - 導演組進度</option>
+        <optgroup label="📅 行事曆">
+          <option value="cal_design">設計概念組排程</option>
+          <option value="cal_director">導演組排程</option>
+        </optgroup>
+        <optgroup label="🎨 精選集 - 設計概念組">
+          <option value="gal_design_yutong">語桐 進度</option>
+          <option value="gal_design_jiaqi">家綺 進度</option>
+          <option value="gal_design_zhiyi">芝翊 進度</option>
+          <option value="gal_design_jieyun">婕㚬 進度</option>
+          <option value="gal_design_shiyao">士堯 進度</option>
+          <option value="gal_design_yian">苡安 進度</option>
+        </optgroup>
+        <optgroup label="🎬 精選集 - 導演組">
+          <option value="gal_director_shaoqian">劭謙 進度</option>
+          <option value="gal_director_ahuang">阿晃 進度</option>
+          <option value="gal_director_xiaogao">小高 進度</option>
+          <option value="gal_director_yiwen">議文 進度</option>
+        </optgroup>
       </select>
     </div>
 
     <div class="form-group">
-      <label class="form-label">2. 標籤 / 負責人名稱</label>
-      <input type="text" id="img-label" class="form-input" placeholder="例如：語桐進度、4月專案排程..." />
+      <label class="form-label">2. 標籤 / 專案名稱</label>
+      <input type="text" id="img-label" class="form-input" placeholder="例如：T1顯卡分鏡、4月排程..." />
     </div>
 
     <div class="form-group" style="margin-bottom:20px;">
@@ -763,11 +856,11 @@
     </div>
     <div id="m-projects" class="modal-projects" style="display:none"></div>
     <div class="modal-section modal-highlight">
-      <strong style="display:block;margin-bottom:3px">🎯 狀態亮點：</strong>
+      <strong>🎯 狀態亮點：</strong>
       <span id="m-hl"></span>
     </div>
     <div class="modal-section modal-warning">
-      <strong style="display:block;margin-bottom:3px">⚠️ 注意事項：</strong>
+      <strong>⚠️ 注意事項：</strong>
       <span id="m-warn"></span>
     </div>
   </div>
@@ -775,31 +868,39 @@
 
 <script>
   /* ════════════════════════════════════════
-     § 1  動態截圖儲存與渲染 (自動化)
+     § 1  動態截圖儲存與渲染 (自動化 + 序列延遲載入防卡死)
   ════════════════════════════════════════ */
-  // 從瀏覽器記憶體中拿資料，沒有的話給個空陣列預設值
-  let galleryData = JSON.parse(localStorage.getItem('ms_gallery_data')) || {
-      cal_design: [],
-      cal_director: [],
-      gal_design: [],
-      gal_director: []
-  };
+  const groupsKeys = [
+    'cal_design', 'cal_director',
+    'gal_design_yutong', 'gal_design_jiaqi', 'gal_design_zhiyi', 'gal_design_jieyun', 'gal_design_shiyao', 'gal_design_yian',
+    'gal_director_shaoqian', 'gal_director_ahuang', 'gal_director_xiaogao', 'gal_director_yiwen'
+  ];
 
-  // 打開新增視窗
-  function openAddImgModal(defaultGroup) {
-      document.getElementById('img-target-group').value = defaultGroup;
+  let galleryData = JSON.parse(localStorage.getItem('ms_gallery_data'));
+  
+  if (!galleryData) {
+      galleryData = {};
+      groupsKeys.forEach(k => galleryData[k] = []);
+  } else {
+      groupsKeys.forEach(k => { if(!galleryData[k]) galleryData[k] = []; });
+  }
+
+  function openAddImgModal(defaultGroupType) {
+      const select = document.getElementById('img-target-group');
+      if(defaultGroupType === 'gal_design') select.value = 'gal_design_yutong';
+      else if(defaultGroupType === 'gal_director') select.value = 'gal_director_shaoqian';
+      else select.value = defaultGroupType;
+
       document.getElementById('img-label').value = '';
       document.getElementById('img-urls').value = '';
       document.getElementById('add-img-modal').classList.add('active');
   }
 
-  // 關閉新增視窗
   function closeAddImgModal(e) {
       if (e && e.target !== e.currentTarget && !e.target.classList.contains('modal-close')) return;
       document.getElementById('add-img-modal').classList.remove('active');
   }
 
-  // 儲存並渲染
   function saveImages() {
       const group = document.getElementById('img-target-group').value;
       const label = document.getElementById('img-label').value.trim() || '未命名截圖';
@@ -810,28 +911,21 @@
           return;
       }
 
-      // 將文字框內容按斷行切分，過濾掉空白行
       const urls = urlsText.split('\n').map(u => u.trim()).filter(u => u !== '');
       
       urls.forEach(rawUrl => {
-          // 自動清除 Windows「複製為路徑」帶來的雙引號或單引號
           let finalUrl = rawUrl.replace(/^["']|["']$/g, '');
-          
           if (/^[a-zA-Z]:\\/.test(finalUrl)) {
               finalUrl = 'file:///' + finalUrl.replace(/\\/g, '/');
           }
           galleryData[group].push({ label: label, url: finalUrl });
       });
 
-      // 存入快取
       localStorage.setItem('ms_gallery_data', JSON.stringify(galleryData));
-      
-      // 重新渲染畫面
       renderGallery();
       document.getElementById('add-img-modal').classList.remove('active');
   }
 
-  // 刪除圖片
   function deleteImage(group, index) {
       if(confirm('確定要移除這張截圖嗎？')) {
           galleryData[group].splice(index, 1);
@@ -840,21 +934,68 @@
       }
   }
 
-  // 將資料畫到網頁上
+  // 延遲排隊載入機制 (避免內網路徑同時抓取導致卡死)
+  let imageObserver = null;
+  let imageLoadQueue = [];
+  let isProcessingQueue = false;
+
+  function processImageQueue() {
+      if (isProcessingQueue || imageLoadQueue.length === 0) return;
+      isProcessingQueue = true;
+
+      const img = imageLoadQueue.shift();
+      const spinner = img.nextElementSibling;
+      const errorBox = img.parentElement.querySelector('.photo-placeholder');
+
+      img.onload = () => {
+          img.classList.add('loaded');
+          if (spinner) spinner.style.display = 'none';
+          isProcessingQueue = false;
+          processImageQueue(); // 載完再載下一張
+      };
+
+      img.onerror = () => {
+          img.style.display = 'none';
+          if (spinner) spinner.style.display = 'none';
+          if (errorBox) errorBox.style.display = 'flex';
+          isProcessingQueue = false;
+          processImageQueue(); // 失敗也繼續下一張
+      };
+
+      // 正式發送請求
+      img.src = img.dataset.src;
+  }
+
   function renderGallery() {
-      ['cal_design', 'cal_director', 'gal_design', 'gal_director'].forEach(group => {
+      // 重置 Observer 與 Queue
+      if (imageObserver) imageObserver.disconnect();
+      imageLoadQueue = [];
+      isProcessingQueue = false;
+
+      imageObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                  const img = entry.target.querySelector('img.lazy-image');
+                  if (img && !img.dataset.queued && img.dataset.src) {
+                      img.dataset.queued = "true";
+                      imageLoadQueue.push(img);
+                      processImageQueue();
+                  }
+              }
+          });
+      }, { rootMargin: "100px" });
+
+      groupsKeys.forEach(group => {
           const container = document.getElementById(group + '-container');
           if(!container) return;
           
-          container.innerHTML = ''; // 清空原本的 HTML
+          container.innerHTML = '';
           
-          // 如果沒有資料，顯示提示
           if(galleryData[group].length === 0) {
               container.innerHTML = `
-                <div class="photo-placeholder" style="border-radius: var(--radius-md); min-height: 150px;">
-                    <span style="font-size:32px;">📸</span>
-                    <b>目前尚無截圖</b>
-                    <span style="color:var(--muted); font-size:11px;">請點擊下方按鈕貼上路徑</span>
+                <div class="photo-placeholder" style="border-radius: var(--radius-md); min-height: 100px;">
+                    <span style="font-size:24px;">📸</span>
+                    <b>尚無截圖</b>
                 </div>`;
               return;
           }
@@ -866,28 +1007,28 @@
               card.className = isCalendar ? 'calendar-hero-img' : 'photo-card';
               card.setAttribute('data-label', item.label);
               
-              // 點擊事件：若點到刪除鍵則中斷，否則開燈箱
               card.onclick = (e) => {
                   if(e.target.classList.contains('delete-btn')) return;
                   isCalendar ? openLightboxSingle(card) : openLightbox(card);
               };
 
+              // 替換原本直接寫 src 的方式，改為 data-src + placeholder，並交由 observer 排隊處理
               card.innerHTML = `
-                  <img src="${item.url}" alt="${item.label}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                  <img data-src="${item.url}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="${item.label}" class="lazy-image" />
+                  <div class="loader-spinner">⏳ 載入中...</div>
                   <div class="photo-placeholder" style="display:none; position: absolute; inset:0;">
                       <span>⚠️</span><b style="color:var(--rose)">圖片無法載入</b>
                       <code style="word-break: break-all; padding: 0 10px;">${item.url}</code>
-                      <span style="font-size:10px; color:var(--muted); margin-top:4px;">請確認是否有加上 .jpg/.png，或內網是否連線</span>
                   </div>
                   ${isCalendar ? `<span class="overlay-hint">🔍 點擊放大檢視</span>` : `<div class="photo-label">${item.label}</div>`}
                   <button class="delete-btn" onclick="deleteImage('${group}', ${index})" title="移除圖片">✖</button>
               `;
               
-              // Hover 時顯示刪除按鈕
               card.onmouseenter = () => { const db = card.querySelector('.delete-btn'); if(db) db.style.display = 'flex'; };
               card.onmouseleave = () => { const db = card.querySelector('.delete-btn'); if(db) db.style.display = 'none'; };
 
               container.appendChild(card);
+              imageObserver.observe(card); // 監聽這張卡片
           });
       });
   }
@@ -1018,17 +1159,61 @@
      § 6  Modal（成員狀態彈窗）
   ════════════════════════════════════════ */
   const MEMBERS = {
-    '語桐': { badge:'Tech/Support', bg:'var(--indigo-m)', fg:'var(--indigo)', hl:'極限救火《Msi_Titan》產出 ColorScript；親自介入《全支付》調度與 QC。', warn:'兼顧自身高壓產出與管理把關，需高度留意工作負載與精力消耗。' },
-    '家綺': { badge:'Concept',      bg:'var(--amber-m)',  fg:'var(--amber)',  hl:'靈活應變 Gemini 改版，改以 3D 模型輔助《全支付》日本卡；準備《Acer_PL7》常服角色。', warn:'AI 工具不穩定時會直接影響產出，需隨時備妥替代方案。' },
-    '芝翊': { badge:'Scene',        bg:'var(--sky-m)',    fg:'var(--sky)',    hl:'穩健推進《故宮》9 張 SF 分層；《RogT1》快速調整 Layout 並準備直橫雙版本。', warn:'頻繁應對客戶選擇變更與社群規格調整，需保持極高的排版彈性。' },
-    '婕㚬': { badge:'AI/3D',        bg:'var(--emerald-m)',fg:'var(--emerald)',hl:'《黑白清道夫》展現驚人手速，單日完成 5 角色邊框勾勒；負責《Acer_PL7》武器設計。', warn:'《Rog_20th》正片分鏡面臨反饋修改暫停，需留意卡關導致後續時程壓縮。' },
-    '士堯': { badgeText: 'Concept / 新成員', badgeBg: 'var(--amber-m)', badgeColor: 'var(--amber)', highlight: '負責多卡《Rog20thLineUp》3D正片、Teaser Concept。', warning: '初期有點難掌握PS PhotoBash，場景、設計等易失深度層次，還在努力熟悉工作流程和合適的工具使用方式。' },
-    '苡安': { badgeText: 'Char/UI / 新成員', badgeBg: '#e2e8f0', badgeColor: '#475569', highlight: '《全支付》分鏡過關~畫得很有生命力；《國館》分鏡理解極佳；《故宮》靈猴生動加上玉器材質。', warning: '分鏡透視易誇張致3D難執行；時程掌控可優化；PS工具還在初步理解階段，逐步熟悉中。' },
-    '劭謙': { badge:'HEAVY（重度負載）', bg:'var(--rose-m)',  fg:'var(--rose)',  proj:'Garena / MCC / ROG等', hl:'全面主導 Computex 多案交片排程，精準規劃 Acopy/Final 死線。', warn:'高達 8 個高強度企業專案集中於五月中下旬交付，需嚴防多線作業混亂或方向失焦。' },
-    '阿晃': { badge:'PROD（穩健製作）', bg:'var(--emerald-m)',fg:'var(--emerald)',proj:'TASA / Msi等', hl:'《Msi》多項產品穩健邁向 Bcopy 與 Final；推動《TASA》定剪與《星星電力》提案。', warn:'五月上中旬面臨多支影片同時 Final 交片潮，需嚴格控管後端動畫與合成的時程。' },
-    '小高': { badge:'PITCH / Ongoing', bg:'var(--sky-m)',    fg:'var(--sky)',   proj:'ROG顯卡 / 國館 / Innodisk', hl:'大力扛起 Computex《ROG顯卡》死線衝刺；主導《國館》兩批概念圖與分鏡提案。', warn:'《國館》屬大型公部門展演，需配合策展商繳交細設報告書，需為行政審查預留時間。' },
-    '議文': { badge:'PITCH（新血加入）', bg:'var(--sky-m)',    fg:'var(--sky)',   proj:'星星電力', hl:'正式加入提案戰線，與阿晃導演共同準備 5/19 的《星星電力》提案。', warn:'作為新加入戰力，需與團隊密切對焦提案素材的進度與簡報方向。' },
-    '柏安': { badge:'HANDOVER（育嬰假）', bg:'var(--amber-m)', fg:'var(--amber)', proj:'專案交接', hl:'已於月初順利交接《Rog20th顯卡》等專案，並正式開始休育嬰假。', warn:'團隊需適應在少一名資深導演情況下的量產節奏。' },
+    '語桐': { 
+      badge:'Tech/Support', bg:'var(--indigo-m)', fg:'var(--indigo)', 
+      hl:'月初展現極限救火能力，產出《Msi_Titan》ColorScript；下旬順利推進《Acer_PL7》分鏡，並啟動《MLG》機甲設計與「水墨卡」風格發想（以拼貼方式進行0030）。此外，親自接手士堯未完成的《Acer_PL7》男生十字弓武器設計進行統整收尾。', 
+      warn:'整個月身兼多案的高壓產出（PL7分鏡、水墨卡、MLG），同時還需負責團隊管理把關（全支付QC）與新人設計的收尾救援。需高度留意自身的工作負載與精力消耗。' 
+    },
+    '家綺': { 
+      badge:'Concept', bg:'var(--amber-m)', fg:'var(--amber)', 
+      hl:'月初靈活以3D模型輔助推進《全支付》日本卡；下旬完成《Acer_PL7》男女常服角色設計，並順利推進《全支付》虎利大富翁反饋更新。月底「水墨卡」新風格 0100 線稿已完成，順利進入上色階段。', 
+      warn:'AI工具不穩定時需隨時備妥替代方案；面臨新風格（水墨卡）的切換與上色，考驗前期的風格探索，需預留磨合時間。' 
+    },
+    '芝翊': { 
+      badge:'Scene', bg:'var(--sky-m)', fg:'var(--sky)', 
+      hl:'月初高彈性應對《RogT1》直橫版調整；順利完結《故宮》9張SF的反饋與分層；完成《Acer_PL7》尾卡Concept後，及時接手婕㚬Pass過來的「城市大場景Concept」並確認不使用3D方式進行繪製。', 
+      warn:'整個月頻繁應對不同專案與製程切換（實拍合成、社群圖、2D大場景），需保持極高的排版與作業彈性。' 
+    },
+    '婕㚬': { 
+      badge:'AI/3D', bg:'var(--emerald-m)', fg:'var(--emerald)',
+      hl:'月中單日推進《黑白清道夫》5位角色的場景線條並過關；月底迅速應對客戶需求，將角色外框改為「五官輪廓線+全身邊框設計」；同時穩健推進《Acer_PL7》場景Concept素模排列。', 
+      warn:'面臨大型專案設計方向大改（如清道夫角色外框改五官）時，需機動調配產能。考量進度安排，將部分大型任務（如城市大場景）轉交芝翊協作是很好的減壓決策，需持續留意多線併行的時程壓力。' 
+    },
+    '士堯': { 
+      badgeText: 'Concept / 新成員', badgeBg: 'var(--amber-m)', badgeColor: 'var(--amber)', 
+      highlight: '在語桐老師的協助下，成功克服《全支付》大型遠景MP與實拍合成瓶頸並完成出圖；順利產出《新聞Bar》尺寸更正設計；月底準備進入新案《MLG》的背景設計。', 
+      warning: '對複雜武器的細部設計（如《Acer_PL7》十字弓）因基礎尚未打穩遇到明顯瓶頸，最終交由老師接手收尾。建議針對基礎設計能力安排更多輔導與練習時間，並維持與老師的密切討論。' 
+    },
+    '苡安': { 
+      badgeText: 'Char/UI / 新成員', badgeBg: '#e2e8f0', badgeColor: '#475569', 
+      highlight: '整個月穩定輸出細節，完成《全支付》富士山修改、多版本虎利表情對焦與大富翁卡；協助《故宮》9張SF分層順利收尾；月底全面投入《Acer_PL7》角色盔甲服的背面設計繪製。', 
+      warning: '面對客戶多版本與細微反饋需反覆測試，並在完成角色背面設計等新任務階段後，及時與老師進行QC確認，確保精準命中目標。' 
+    },
+    '劭謙': { 
+      badge:'HEAVY（重度負載）', bg:'var(--rose-m)', fg:'var(--rose)', proj:'Garena / MCC / ROG等', 
+      hl:'全面主導 Computex 交片潮，精準控管死線。整個月推動《Rog_20th》、《Msi_Titan》、《ROG Controller》、《Garena》PV 陸續邁入 Acopy 與 Final 交付，並著手《Acer_PL7》腳本細寫。', 
+      warn:'高達 8 個高強度企業專案集中在五月中下旬交付，需嚴防多線作業導致的製程混亂或方向失焦。' 
+    },
+    '阿晃': { 
+      badge:'PROD（穩健製作）', bg:'var(--emerald-m)', fg:'var(--emerald)', proj:'TASA / Msi等', 
+      hl:'穩健推動《Msi》系列產品過關 Final；整個月持續追蹤《地球館CP4》、《TASA》ACopy 進度，並推進《星星電力》新案提案。', 
+      warn:'五月中下旬面臨多支影片同時 Final 的交片潮，需嚴格控管後端動畫與合成的排程。' 
+    },
+    '小高': { 
+      badge:'PITCH / Ongoing', bg:'var(--sky-m)', fg:'var(--sky)', proj:'ROG顯卡 / 國館 / Innodisk', 
+      hl:'大力扛起 Computex《ROG 20周年顯卡》發布會版本的死線衝刺與《Innodisk》交片；主導《國館》兩批概念圖與分鏡提案，並完成細設報告書繳交。', 
+      warn:'《國館》屬大型公部門展演案，需配合策展商的各式行政流程，需為行政審查與文書報告預留充分時間。' 
+    },
+    '議文': { 
+      badge:'PITCH（新血加入）', bg:'var(--sky-m)', fg:'var(--sky)', proj:'星星電力', 
+      hl:'五月份正式加入提案戰線，與阿晃導演共同準備並完成 5/19 的《星星電力》專案提案。', 
+      warn:'作為新加入的戰力，需與團隊密切對焦提案素材的準備進度與簡報方向。' 
+    },
+    '柏安': { 
+      badge:'HANDOVER（育嬰假）', bg:'var(--amber-m)', fg:'var(--amber)', proj:'專案交接', 
+      hl:'已於月初順利交接《Rog20th顯卡》等專案，並正式開始休育嬰假。', 
+      warn:'團隊需適應在少一名資深導演情況下的量產節奏。' 
+    },
   };
 
   function openModal(name) {
@@ -1073,7 +1258,6 @@
   /* ════════════════════════════════════════
      § 7  畫廊：篩選 / 燈箱
   ════════════════════════════════════════ */
-
   function filterGallery(group, btn) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
@@ -1095,7 +1279,7 @@
     if (!grid) return openLightboxSingle(card); 
 
     const img = card.querySelector('img');
-    if (!img || !img.getAttribute('src')) {
+    if (!img || !(img.dataset.src || img.getAttribute('src'))) {
         alert("尚未設定圖片，請點擊下方的「＋ 新增截圖」按鈕！");
         return;
     }
@@ -1106,7 +1290,7 @@
 
     lbGroup = [...grid.querySelectorAll('.photo-card')].filter(c => {
         const i = c.querySelector('img');
-        return i && i.getAttribute('src') && i.style.display !== 'none';
+        return i && (i.dataset.src || i.getAttribute('src')) && i.style.display !== 'none';
     });
     
     if(lbGroup.length === 0) lbGroup = [card];
@@ -1124,7 +1308,7 @@
 
   function openLightboxSingle(card) {
     const img = card.querySelector('img');
-    if (!img || !img.getAttribute('src')) {
+    if (!img || !(img.dataset.src || img.getAttribute('src'))) {
         alert("尚未設定圖片，請點擊下方的「＋ 貼上截圖」按鈕！");
         return;
     }
@@ -1150,7 +1334,8 @@
     const img     = card.querySelector('img');
     const caption = card.getAttribute('data-label') || '';
     
-    document.getElementById('lb-img').src         = img.src;
+    // 燈箱讀取真實路徑
+    document.getElementById('lb-img').src         = img.dataset.src || img.src;
     document.getElementById('lb-img').alt         = caption;
     document.getElementById('lb-caption').textContent = caption;
     
@@ -1185,7 +1370,6 @@
     }
   });
 
-
   /* ════════════════════════════════════════
      § 8  初始化
   ════════════════════════════════════════ */
@@ -1194,7 +1378,6 @@
     initSplitter('sp-design',   'split-design-left',   'ms_split_design');
     initSplitter('sp-director', 'split-director-left', 'ms_split_director');
     
-    // 渲染自動儲存的畫廊圖片
     renderGallery();
 
     document.addEventListener('keydown', e => {
